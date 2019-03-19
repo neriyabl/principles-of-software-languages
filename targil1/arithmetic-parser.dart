@@ -1,11 +1,11 @@
 
 
 main(){
-  print(Add());
+  print(add());
 }
 
 
-String Add() {
+String add() {
   return '@0\n'
          'M=M-1\n'
          'A=M\n'
