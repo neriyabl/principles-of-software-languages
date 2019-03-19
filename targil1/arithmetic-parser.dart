@@ -1,19 +1,13 @@
-
-
-main(){
-  print(add());
+main() {
+  print(add);
 }
 
+const prefixBinaryOperator = '@0\n' + 'AM=M-1\n' + 'D=M\n' + 'A=A-1\n';
 
-String add() {
-  return '@0\n'
-         'M=M-1\n'
-         'A=M\n'
-         'D=M\n'
-         'A=A-1\n'
-         'A=M\n'
-         'D=D+A\n'
-         '@0\n'
-         'A=M-1\n'
-         'M=D';
-}
+const add = prefixBinaryOperator + 'M=D+M\n';
+const sub = prefixBinaryOperator + 'M=D-M\n';
+const neg = '@0\n' + 'A=M-1\n' + 'M=-M\n';
+
+const and = prefixBinaryOperator + 'M=D&M\n';
+const or = prefixBinaryOperator + 'M=D|M\n';
+const not = '@0\n' + 'A=M-1\n' + 'M=!M\n';
