@@ -1,13 +1,13 @@
 main() {
-  print(add);
+  print('1'=='1');
 }
 
-const prefixBinaryOperator = '@0\n' + 'AM=M-1\n' + 'D=M\n' + 'A=A-1\n';
+const PREFIX_BINARY_OPERATOR = '@SP\n' + 'AM=M-1\n' + 'D=M\n' + 'A=A-1\n';
 
-const add = prefixBinaryOperator + 'M=D+M\n';
-const sub = prefixBinaryOperator + 'M=D-M\n';
-const neg = '@0\n' + 'A=M-1\n' + 'M=-M\n';
+const add = PREFIX_BINARY_OPERATOR + 'M=D+M\n';
+const sub = PREFIX_BINARY_OPERATOR + 'M=D-M\n';
+const neg = '@SP\n' + 'A=M-1\n' + 'M=-M\n';
 
-const and = prefixBinaryOperator + 'M=D&M\n';
-const or = prefixBinaryOperator + 'M=D|M\n';
-const not = '@0\n' + 'A=M-1\n' + 'M=!M\n';
+const and = PREFIX_BINARY_OPERATOR + 'M=D&M\n';
+const or = PREFIX_BINARY_OPERATOR + 'M=D|M\n';
+const not = '@SP\n' + 'A=M-1\n' + 'M=!M\n';
