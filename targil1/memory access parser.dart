@@ -1,5 +1,5 @@
 class MemoryAccessCommands {
-  static const _HELP_MAP = const {
+  static const _HELP_MAP = {
     'local': 'LCL',
     'argument': 'ARG',
     'this': 'THIS',
@@ -25,36 +25,36 @@ class MemoryAccessCommands {
 
   _pushGroup1(segment, index) {
     return '@${index}\n'
-        'D=A\n'
-        '@${_HELP_MAP[segment]}\n'
-        'A=M+D\n'
-        'D=M\n' +
-        _PUSH_D;
+      'D=A\n'
+      '@${_HELP_MAP[segment]}\n'
+      'A=M+D\n'
+      'D=M\n' +
+      _PUSH_D;
   }
 
   _pushTemp(index) {
-    return '@${5 + index}\n'
-        'D=M\n' +
-        _PUSH_D;
+    return '@${5 + int.parse(index)}\n'
+      'D=M\n' +
+      _PUSH_D;
   }
 
   _pushStatic(index, fileName) {
     return '@${fileName}.${index}\n'
-        'D=M\n' +
-        _PUSH_D;
+      'D=M\n' +
+      _PUSH_D;
   }
 
   _pushPointer(index) {
     var ptr = index == '0' ? 'THIS' : 'THAT';
     return '@${ptr}\n'
-        'D=M\n' +
-        _PUSH_D;
+      'D=M\n' +
+      _PUSH_D;
   }
 
   _pushConstant(val) {
     return '@${val}\n'
-        'D=A\n' +
-        _PUSH_D;
+      'D=A\n' +
+      _PUSH_D;
   }
 
   pop(segment, index, {fileName = ''}) {
@@ -71,14 +71,14 @@ class MemoryAccessCommands {
 
   _popGroup1(segment, index) {
     return _POP_TO_D +
-        '@${_HELP_MAP[segment]}\n'
-        'A=M\n' +
-        ('A=A+1\n' * index) +
-        _STORE_D;
+      '@${_HELP_MAP[segment]}\n'
+      'A=M\n' +
+      ('A=A+1\n' * int.parse(index)) +
+      _STORE_D;
   }
 
   _popTemp(index) {
-    return _POP_TO_D + '@${5 + index}\n' + _STORE_D;
+    return _POP_TO_D + '@${5 + int.parse(index)}\n' + _STORE_D;
   }
 
   _popPointer(index) {
@@ -88,5 +88,17 @@ class MemoryAccessCommands {
 
   _popStatic(index, fileName) {
     return _POP_TO_D + '@${fileName}.${index}' + _STORE_D;
+  }
+
+  parse(String line) {
+    var reg = new RegExp(
+      r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d*$');
+    if (reg.hasMatch(line)) {
+      var command = line.split(' ');
+      if (line.startsWith('pop '))
+        return this.pop(command[1], command[2]);
+      else
+        return this.push(command[1], command[2]);
+    }
   }
 }
