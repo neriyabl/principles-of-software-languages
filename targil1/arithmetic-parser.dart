@@ -3,7 +3,7 @@ class ArithmeticCommands {
       '@SP\n' + 'AM=M-1\n' + 'D=M\n' + 'A=A-1\n';
 
   static const add = _PREFIX_BINARY_OPERATOR + 'M=D+M\n';
-  static const sub = _PREFIX_BINARY_OPERATOR + 'M=D-M\n';
+  static const sub = _PREFIX_BINARY_OPERATOR + 'M=M-D\n';
   static const neg = '@SP\n' + 'A=M-1\n' + 'M=-M\n';
 
   static const and = _PREFIX_BINARY_OPERATOR + 'M=D&M\n';
