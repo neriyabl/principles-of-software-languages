@@ -1,3 +1,9 @@
+/*
+  Netanel Avraham 207544131
+  Neriya Bar-lev  313366676
+ */
+
+
 import 'dart:io';
 import 'dart:convert';
 import 'arithmetic-parser.dart';
@@ -48,8 +54,7 @@ main() async {
   print("enter the file name");
   var path = stdin.readLineSync();
   var file = new File(path);
-  print(file.existsSync());
-  print(file.path);
+
   if (!file.path.endsWith('.vm')) {
     print('${path} not found vm file');
     return;
