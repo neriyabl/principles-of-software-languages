@@ -68,8 +68,9 @@ main() async {
     .openWrite();
   var translator = new VMTranslator();
   try {
+    var fileNameStart =file.path.contains('/')? file.path.lastIndexOf('/')+1: 0;
     var outString = translator.parse(
-      lines, file.path.substring(0, file.path.length - 3));
+      lines, file.path.substring(fileNameStart, file.path.length - 3));
     asmFile.write(outString);
   } catch (e) {
     print('not valid code\n\n');
