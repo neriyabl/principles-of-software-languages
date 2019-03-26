@@ -5,7 +5,7 @@ class MemoryAccessCommands {
     'this': 'THIS',
     'that': 'THAT'
   };
-  static const _PUSH_D = '@SP\n' 'A=M\n' 'M=D\n' '@SP\n' 'M=M+1\n';
+  static const _PUSH_D = '@SP\n' 'M=M+1\n' 'A=M-1\n' 'M=D\n';
   static const _POP_TO_D = '@SP\n' 'A=M-1\n' 'D=M\n';
   static const _STORE_D = 'M=D\n' '@SP\n' 'M=M-1\n';
 
@@ -70,11 +70,17 @@ class MemoryAccessCommands {
   }
 
   _popGroup1(segment, index) {
-    return _POP_TO_D +
-        '@${_HELP_MAP[segment]}\n'
-        'A=M\n' +
-        ('A=A+1\n' * int.parse(index)) +
-        _STORE_D;
+    return '@${_HELP_MAP[segment]}\n'
+        'D=M\n'
+        '@${index}\n'
+        'D=D+A\n'
+        '@SP\n'
+        'AM=M-1\n'
+        'D=M+D\n'
+        'M=D-M\n'
+        'D=D-M\n'
+        'A=M\n'
+        'M=D\n';
   }
 
   _popTemp(index) {
@@ -87,7 +93,7 @@ class MemoryAccessCommands {
   }
 
   _popStatic(index, fileName) {
-    return _POP_TO_D + '@${fileName}.${index}' + _STORE_D;
+    return _POP_TO_D + '@${fileName}.${index}\n' + _STORE_D;
   }
 
   parse(String line, String fileName) {
