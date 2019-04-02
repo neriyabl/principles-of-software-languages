@@ -7,7 +7,7 @@ class FunctionCommands {
   static var _returnAddressCounter = 0;
   static var _funcLoopCounter = 0;
 
-  FunctionCommands(this._fileName){
+  FunctionCommands(this._fileName) {
     memAccess = new MemoryAccessCommands(_fileName);
   }
 
@@ -59,8 +59,12 @@ class FunctionCommands {
         'D=A\n'
         '@${funcName}.END.${_funcLoopCounter}\n'
         'D;JEQ\n'
-        '(${funcName}.Loop.${_funcLoopCounter})\n' +
-        this._push(0) +
+        '(${funcName}.Loop.${_funcLoopCounter})\n'
+        '@SP\n'
+        'A=M\n'
+        'M=0\n'
+        '@SP\n'
+        'M=M+1\n'
         '@${funcName}.Loop.${_funcLoopCounter}\n'
         'D=D-1;JNE\n'
         '(${funcName}.END.${_funcLoopCounter})\n';
@@ -95,12 +99,15 @@ class FunctionCommands {
 
   parse(String line) {
     var command = line.split(' ');
+    if (command.length > 1 && command[2].contains('//')) {
+      command[2] = command[2].substring(0, command[2].indexOf('//'));
+    }
     switch (command[0]) {
       case 'call':
         return _call(command[1], command[2]);
       case 'function':
         return _function(command[1], command[2]);
-      case 'retutn':
+      case 'return':
         return _return();
     }
     throw 'function command not valid';

@@ -7,13 +7,13 @@ import 'functions-commands.dart';
 import 'dart:io';
 import 'dart:convert';
 
-class VMTranslatorFile {
+class _VMTranslatorFile {
   final memoryReg = new RegExp(
-      r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d+$');
-  final arithmeticReg = new RegExp(r'^(add|sub|neg|and|or|not)$');
-  final logicReg = new RegExp(r'^(eq|gt|lt)$');
-  final flowReg = new RegExp(r'^(label|goto|if-goto) (\w|\.)+$');
-  final functionsReg = new RegExp(r'^(return|(call|function) (\w|\.)+ \d+)$');
+      r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d+( )*(//(.)*)*$');
+  final arithmeticReg = new RegExp(r'^(add|sub|neg|and|or|not)( )*(//(.)*)*$');
+  final logicReg = new RegExp(r'^(eq|gt|lt)( )*(//(.)*)*$');
+  final flowReg = new RegExp(r'^(label|goto|if-goto) (\w|\.)+( )*(//(.)*)*$');
+  final functionsReg = new RegExp(r'^(return|(call|function) (\w|\.)+ \d+)( )*(//(.)*)*$');
 
   ArithmeticCommands arithmeticParser;
   LogicCommands logicParser;
@@ -21,9 +21,10 @@ class VMTranslatorFile {
   FlowCommands flowParser;
   FunctionCommands functionParser;
 
-  final _fileName;
+  var _fileName;
 
-  VMTranslatorFile(this._fileName) {
+  _VMTranslatorFile(String fileName) {
+    _fileName = fileName;
     arithmeticParser = new ArithmeticCommands();
     logicParser = new LogicCommands();
     memoryParser = new MemoryAccessCommands(_fileName);
@@ -31,7 +32,7 @@ class VMTranslatorFile {
     functionParser = new FunctionCommands(_fileName);
   }
 
-  _parseFile(List<String> listOfLines) {
+  String parseFile(List<String> listOfLines) {
     var hackCode = '';
     for (var line in listOfLines) {
       hackCode += _parseCommand(line);
@@ -69,4 +70,35 @@ class VMTranslatorFile {
     if (functionsReg.hasMatch(line)) return 'function';
     return 'not valid';
   }
+}
+
+class VMTranslator {
+  translate(String directoryPath) async {
+    List<String> listHacks = new List<String>();
+    var directory = new Directory(directoryPath);
+    if (!directory.existsSync()) {
+      print('this directory not found');
+      return;
+    }
+    await directory.list(recursive: true).forEach((FileSystemEntity entity) {
+      if (entity.path.endsWith('.vm')) {
+        var fileName = entity.path
+            .substring(entity.path.indexOf('\\') + 1, entity.path.length - 3)
+            .replaceAll('\\', '.');
+        var translator = new _VMTranslatorFile(fileName);
+        List<String> lines = (entity as File).readAsLinesSync();
+        listHacks.add(translator.parseFile(lines));
+      }
+    });
+    var hackFile = new File(directoryPath + '.asm').openWrite();
+    hackFile.write(listHacks.join('\n//----- file -----\n'));
+  }
+}
+
+main() {
+  print("enter the directory name");
+  var path = stdin.readLineSync();
+  VMTranslator vmTranslator = new VMTranslator();
+  vmTranslator.translate(path);
+  print('-------- end ---------');
 }

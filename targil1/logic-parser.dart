@@ -34,6 +34,9 @@ class LogicCommands {
   parse(line) {
     _counter_FALSE++;
     _counter_TRUE++;
+    if (line.contains('//')) {
+      line = line.substring(0, line.indexOf('//'));
+    }
     return _rout_map[line]();
   }
 }
