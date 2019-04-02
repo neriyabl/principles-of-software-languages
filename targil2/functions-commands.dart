@@ -22,11 +22,11 @@ class FunctionsCommands {
         'M=D\n';
   }
 
-  _popSegment(fromSegment, toSegment) {
-    return '@${fromSegment}\n'
+  _popSegment(Segment) {
+    return '@LCL\n'
         'AM=M-1\n'
         'D=M\n'
-        '@${toSegment}\n'
+        '@${Segment}\n'
         'M=D\n';
   }
 
@@ -70,8 +70,37 @@ class FunctionsCommands {
         'D=M\n'
         '@ARG\n'
         'A=M\n'
-        'M=D\n';
+        'M=D\n'
+        '@ARG\n'
+        'D=M+1\n'
+        '@SP\n'
+        'M=D\n'
+        '@5\n'
+        'D=A\n'
+        '@LCL\n'
+        'A=M-D\n'
+        'D=M\n'
+        '@13\n'
+        'M=D\n' +
+        _popSegment('THAT') +
+        _popSegment('THIS') +
+        _popSegment('ARG') +
+        _popSegment('LCL') +
+        '@13\n'
+        'A=M\n'
+        '0;JMP\n';
   }
 
-  parse(line) {}
+  parse(String line) {
+    var command = line.split(' ');
+    switch (command[0]) {
+      case 'call':
+        return _call(command[1], command[2]);
+      case 'function':
+        return _function(command[1], command[2]);
+      case 'retutn':
+        return _return();
+    }
+    throw 'function command not valid';
+  }
 }
