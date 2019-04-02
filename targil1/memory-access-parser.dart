@@ -9,6 +9,9 @@ class MemoryAccessCommands {
   static const _POP_TO_D = '@SP\n' 'A=M-1\n' 'D=M\n';
   static const _STORE_D = 'M=D\n' '@SP\n' 'M=M-1\n';
 
+  final _fileName;
+  MemoryAccessCommands(this._fileName);
+
   push(segment, index, {fileName = ''}) {
     if (_HELP_MAP.keys.contains(segment)) return _pushGroup1(segment, index);
     switch (segment) {
@@ -96,15 +99,15 @@ class MemoryAccessCommands {
     return _POP_TO_D + '@${fileName}.${index}\n' + _STORE_D;
   }
 
-  parse(String line, String fileName) {
+  parse(String line) {
     var reg = new RegExp(
         r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d*$');
     if (reg.hasMatch(line)) {
       var command = line.split(' ');
       if (line.startsWith('pop '))
-        return this.pop(command[1], command[2], fileName: fileName);
+        return this.pop(command[1], command[2], fileName: _fileName);
       else
-        return this.push(command[1], command[2], fileName: fileName);
+        return this.push(command[1], command[2], fileName: _fileName);
     }
   }
 }

@@ -1,7 +1,7 @@
-class FlowCommand {
+class FlowCommands {
   final String _fileName;
 
-  FlowCommand(this._fileName);
+  FlowCommands(this._fileName);
 
   _label(label) {
     return '(${_fileName}.${label})\n';

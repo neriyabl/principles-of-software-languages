@@ -1,13 +1,15 @@
 import '../targil1/memory-access-parser.dart';
 
-class FunctionsCommands {
+class FunctionCommands {
   final String _fileName;
-  final MemoryAccessCommands memAccess = new MemoryAccessCommands();
+  MemoryAccessCommands memAccess;
 
   static var _returnAddressCounter = 0;
   static var _funcLoopCounter = 0;
 
-  FunctionsCommands(this._fileName);
+  FunctionCommands(this._fileName){
+    memAccess = new MemoryAccessCommands(_fileName);
+  }
 
   _push(val) {
     return memAccess.push('constant', val);

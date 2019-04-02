@@ -26,12 +26,12 @@ class VMTranslator1 {
 
   _parseCommand(String line, String fileName) {
     var arithmeticParser = new ArithmeticCommands();
-    var memoryParser = new MemoryAccessCommands();
+    var memoryParser = new MemoryAccessCommands(fileName);
     var logicParser = new LogicCommands();
 
     String type = _checkValidMemoryCommand(line);
     if (type == 'arithmetic') return arithmeticParser.parse(line);
-    if (type == 'memory') return memoryParser.parse(line, fileName);
+    if (type == 'memory') return memoryParser.parse(line);
     if (type == 'logic') {
       return logicParser.parse(line);
     };
