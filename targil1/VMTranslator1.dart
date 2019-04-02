@@ -10,7 +10,7 @@ import 'arithmetic-parser.dart';
 import 'logic-parser.dart';
 import 'memory-access-parser.dart';
 
-class VMTranslator {
+class VMTranslator1 {
   var memoryReg = new RegExp(
     r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d*$');
   var arithmeticReg = new RegExp(r'^(add|sub|neg|and|or|not)$');
@@ -66,7 +66,7 @@ main() async {
     .toList();
   var asmFile = new File('${file.path.substring(0, file.path.length - 3)}.asm')
     .openWrite();
-  var translator = new VMTranslator();
+  var translator = new VMTranslator1();
   try {
     var fileNameStart =file.path.contains('/')? file.path.lastIndexOf('/')+1: 0;
     var outString = translator.parse(
