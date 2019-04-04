@@ -105,9 +105,6 @@ class MemoryAccessCommands {
         r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d*( )*(//(.)*)*$');
     if (reg.hasMatch(line)) {
       var command = line.split(' ');
-      if (command[2].contains('//')) {
-        command[2] = command[2].substring(0, command[2].indexOf('//'));
-      }
       if (line.startsWith('pop '))
         return this.pop(command[1], command[2], fileName: _fileName);
       else

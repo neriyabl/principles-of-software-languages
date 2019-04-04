@@ -20,9 +20,6 @@ class ArithmeticCommands {
   };
 
   parse(line) {
-    if (line.contains('//')) {
-      line = line.substring(0, line.indexOf('//'));
-    }
     return _rout_map[line];
   }
 }

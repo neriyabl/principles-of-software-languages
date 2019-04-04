@@ -33,7 +33,7 @@ class FunctionCommands {
   }
 
   _call(funcName, nArgs) {
-    return this._push('@RA${_returnAddressCounter}') +
+    return this._push('RA${_returnAddressCounter}') +
         this._pushSegment('LCL') +
         this._pushSegment('ARG') +
         this._pushSegment('THIS') +
@@ -54,7 +54,7 @@ class FunctionCommands {
   }
 
   _function(funcName, nArgs) {
-    return '(${_fileName}.${funcName})\n'
+    return '(${funcName})\n'
         '@${nArgs}\n'
         'D=A\n'
         '@${funcName}.END.${_funcLoopCounter}\n'
@@ -71,7 +71,14 @@ class FunctionCommands {
   }
 
   _return() {
-    return '@SP\n'
+    return '@5\n'
+        'D=A\n'
+        '@LCL\n'
+        'A=M-D\n'
+        'D=M\n'
+        '@13\n'
+        'M=D\n'
+        '@SP\n'
         'A=M-1\n'
         'D=M\n'
         '@ARG\n'
@@ -80,13 +87,6 @@ class FunctionCommands {
         '@ARG\n'
         'D=M+1\n'
         '@SP\n'
-        'M=D\n'
-        '@5\n'
-        'D=A\n'
-        '@LCL\n'
-        'A=M-D\n'
-        'D=M\n'
-        '@13\n'
         'M=D\n' +
         _popSegment('THAT') +
         _popSegment('THIS') +
@@ -99,9 +99,6 @@ class FunctionCommands {
 
   parse(String line) {
     var command = line.split(' ');
-    if (command.length > 1 && command[2].contains('//')) {
-      command[2] = command[2].substring(0, command[2].indexOf('//'));
-    }
     switch (command[0]) {
       case 'call':
         return _call(command[1], command[2]);
@@ -110,6 +107,6 @@ class FunctionCommands {
       case 'return':
         return _return();
     }
-    throw 'function command not valid';
+    throw '${line}\nfunction command not valid';
   }
 }

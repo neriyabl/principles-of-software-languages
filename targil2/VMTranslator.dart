@@ -41,22 +41,31 @@ class _VMTranslatorFile {
   }
 
   String _parseCommand(String line) {
-    switch (_CheckTypeCommand(line)) {
-      case 'arithmetic':
-        return arithmeticParser.parse(line);
-      case 'memory':
-        return memoryParser.parse(line);
-      case 'logic':
-        return logicParser.parse(line);
-      case 'flow':
-        return flowParser.parse(line);
-      case 'function':
-        return functionParser.parse(line);
+    var type = _CheckTypeCommand(line);
+    var cleanLine = line;
+    if (line.contains('//')) {
+      cleanLine = line.substring(0, line.indexOf('//'));
+    }
+    while(cleanLine.endsWith(' ')){
+      cleanLine = cleanLine.substring(0, cleanLine.length - 1);
+    }
+
+    switch (type) {
       case 'comment':
       case 'empty':
         return '';
+      case 'arithmetic':
+        return arithmeticParser.parse(cleanLine);
+      case 'memory':
+        return memoryParser.parse(cleanLine);
+      case 'logic':
+        return logicParser.parse(cleanLine);
+      case 'flow':
+        return flowParser.parse(cleanLine);
+      case 'function':
+        return functionParser.parse(cleanLine);
       default:
-        throw 'command not valid';
+        throw '${line}\ncommand not valid';
     }
   }
 
@@ -75,6 +84,7 @@ class _VMTranslatorFile {
 class VMTranslator {
   translate(String directoryPath) async {
     List<String> listHacks = new List<String>();
+    var bootstrap = '';
     var directory = new Directory(directoryPath);
     if (!directory.existsSync()) {
       print('this directory not found');
@@ -87,11 +97,15 @@ class VMTranslator {
             .replaceAll('\\', '.');
         var translator = new _VMTranslatorFile(fileName);
         List<String> lines = (entity as File).readAsLinesSync();
-        listHacks.add(translator.parseFile(lines));
+        if(fileName == 'Sys'){
+          bootstrap = translator.parseFile(lines);
+        } else {
+          listHacks.add(translator.parseFile(lines));
+        }
       }
     });
     var hackFile = new File(directoryPath + '.asm').openWrite();
-    hackFile.write(listHacks.join('\n//----- file -----\n'));
+    hackFile.write(bootstrap + listHacks.join('\n//----- file -----\n'));
   }
 }
 

@@ -22,9 +22,6 @@ class FlowCommands {
 
   parse(String line) {
     var command=line.split(' ');
-    if (command[1].contains('//')) {
-      command[1] = command[1].substring(0, command[1].indexOf('//'));
-    }
     switch(command[0])
     {
       case 'label':
@@ -35,6 +32,6 @@ class FlowCommands {
         return _if_goto(command[1]);
 
     }
-  throw 'flow command not valid ';
+  throw '${line}\nflow command not valid ';
   }
 }
