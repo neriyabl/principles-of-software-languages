@@ -13,7 +13,8 @@ class _VMTranslatorFile {
   final arithmeticReg = new RegExp(r'^(add|sub|neg|and|or|not)( )*(//(.)*)*$');
   final logicReg = new RegExp(r'^(eq|gt|lt)( )*(//(.)*)*$');
   final flowReg = new RegExp(r'^(label|goto|if-goto) (\w|\.)+( )*(//(.)*)*$');
-  final functionsReg = new RegExp(r'^(return|(call|function) (\w|\.)+ \d+)( )*(//(.)*)*$');
+  final functionsReg =
+      new RegExp(r'^(return|(call|function) (\w|\.)+ \d+)( )*(//(.)*)*$');
 
   ArithmeticCommands arithmeticParser;
   LogicCommands logicParser;
@@ -46,7 +47,7 @@ class _VMTranslatorFile {
     if (line.contains('//')) {
       cleanLine = line.substring(0, line.indexOf('//'));
     }
-    while(cleanLine.endsWith(' ')){
+    while (cleanLine.endsWith(' ')) {
       cleanLine = cleanLine.substring(0, cleanLine.length - 1);
     }
 
@@ -81,15 +82,17 @@ class _VMTranslatorFile {
   }
 }
 
+var _bootstrap = '@256\n' 'D=A\n' '@SP\n' 'M=D\n' + FunctionCommands('').parse('call Sys.init 0');
+
 class VMTranslator {
   translate(String directoryPath) async {
     List<String> listHacks = new List<String>();
-    var bootstrap = '';
     var directory = new Directory(directoryPath);
     if (!directory.existsSync()) {
       print('this directory not found');
       return;
     }
+    var bootstrap = '';
     await directory.list(recursive: true).forEach((FileSystemEntity entity) {
       if (entity.path.endsWith('.vm')) {
         var fileName = entity.path
@@ -97,10 +100,9 @@ class VMTranslator {
             .replaceAll('\\', '.');
         var translator = new _VMTranslatorFile(fileName);
         List<String> lines = (entity as File).readAsLinesSync();
+        listHacks.add(translator.parseFile(lines));
         if(fileName == 'Sys'){
-          bootstrap = translator.parseFile(lines);
-        } else {
-          listHacks.add(translator.parseFile(lines));
+          bootstrap = _bootstrap;
         }
       }
     });
@@ -109,10 +111,10 @@ class VMTranslator {
   }
 }
 
-main() {
+main() async {
   print("enter the directory name");
   var path = stdin.readLineSync();
   VMTranslator vmTranslator = new VMTranslator();
-  vmTranslator.translate(path);
+  await vmTranslator.translate(path);
   print('-------- end ---------');
 }
