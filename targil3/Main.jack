@@ -1,0 +1,63 @@
+/**
+Math.abs
+Math.multiply
+Math.divide
+Math.min
+Math.max
+Math.sqrt
+
+String.new
+String.dispose
+String.length
+String.charAt
+String.setCharAt
+String.appendChar
+String.eraseLastChar
+String.intValue
+String.setInt
+String.backSpace
+String.doubleQuote
+String.newLine
+
+Array.new
+Array.dispose
+
+Output.moveCursor
+Output.printChar
+Output.printString
+Output.printInt
+Output.println
+Output.backSpace
+
+Screen.clearScreen
+Screen.setColor
+Screen.drawPixel
+Screen.drawLine
+Screen.drawRectangle
+Screen.drawCircle
+
+Sys.halt
+Sys.error
+Sys.wait
+
+Memory.peek
+Memory.poke
+Memory.alloc
+Memory.deAlloc
+
+Keyboard.keyPressed
+Keyboard.readChar
+Keyboard.readLine
+Keyboard.readInt
+*/
+
+class Main {
+    function void main() {
+        var SpaceShip spaceShip; 
+        let spaceShip = SpaceShip.new();
+        while(true){
+            do Sys.wait(1000);
+        }
+        return;
+    }
+}

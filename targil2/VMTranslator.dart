@@ -9,12 +9,12 @@ import 'dart:convert';
 
 class _VMTranslatorFile {
   final memoryReg = new RegExp(
-      r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d+( )*(//(.)*)*$');
-  final arithmeticReg = new RegExp(r'^(add|sub|neg|and|or|not)( )*(//(.)*)*$');
-  final logicReg = new RegExp(r'^(eq|gt|lt)( )*(//(.)*)*$');
-  final flowReg = new RegExp(r'^(label|goto|if-goto) (\w|\.)+( )*(//(.)*)*$');
+      r'^(pop|push) (local|argument|this|that|constant|temp|pointer|static) \d+([ \t])*(//(.)*)*$');
+  final arithmeticReg = new RegExp(r'^(add|sub|neg|and|or|not)([ \t])*(//(.)*)*$');
+  final logicReg = new RegExp(r'^(eq|gt|lt)([ \t])*(//(.)*)*$');
+  final flowReg = new RegExp(r'^(label|goto|if-goto) (\w|\.)+([ \t])*(//(.)*)*$');
   final functionsReg =
-      new RegExp(r'^(return|(call|function) (\w|\.)+ \d+)( )*(//(.)*)*$');
+      new RegExp(r'^(return|(call|function) (\w|\.)+ \d+)([ \t])*(//(.)*)*$');
 
   ArithmeticCommands arithmeticParser;
   LogicCommands logicParser;
@@ -47,6 +47,7 @@ class _VMTranslatorFile {
     if (line.contains('//')) {
       cleanLine = line.substring(0, line.indexOf('//'));
     }
+    cleanLine = cleanLine.replaceAll('\t', ' ');
     while (cleanLine.endsWith(' ')) {
       cleanLine = cleanLine.substring(0, cleanLine.length - 1);
     }

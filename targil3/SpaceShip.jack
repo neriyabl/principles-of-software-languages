@@ -1,0 +1,75 @@
+/**
+Math.abs
+Math.multiply
+Math.divide
+Math.min
+Math.max
+Math.sqrt
+
+String.new
+String.dispose
+String.length
+String.charAt
+String.setCharAt
+String.appendChar
+String.eraseLastChar
+String.intValue
+String.setInt
+String.backSpace
+String.doubleQuote
+String.newLine
+
+Array.new
+Array.dispose
+
+Output.moveCursor
+Output.printChar
+Output.printString
+Output.printInt
+Output.println
+Output.backSpace
+
+Screen.clearScreen
+Screen.setColor
+Screen.drawPixel
+Screen.drawLine
+Screen.drawRectangle
+Screen.drawCircle
+
+Sys.halt
+Sys.error
+Sys.wait
+
+Memory.peek
+Memory.poke
+Memory.alloc
+Memory.deAlloc
+
+Keyboard.keyPressed
+Keyboard.readChar
+Keyboard.readLine
+Keyboard.readInt
+*/
+
+class SpaceShip{
+    field int x, y;
+    field int hight;
+    field int baseHalfWidth;
+    field int wingWidth;
+
+    constructor SpaceShip new(){
+        let x = 256;
+        let y = 256;
+        let hight = 30;
+        let baseHalfWidth=4;
+        let wingWidth=20;
+
+        do draw();
+        return this;
+    }
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x - baseHalfWidth, y-hight, x+baseHalfWidth,y);
+        return;
+    }
+}
