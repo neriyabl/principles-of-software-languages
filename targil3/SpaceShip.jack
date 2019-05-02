@@ -59,7 +59,7 @@ class SpaceShip{
 
     constructor SpaceShip new(){
         let x = 256;
-        let y = 256;
+        let y = 255;
         let hight = 30;
         let baseHalfWidth=4;
         let wingWidth=20;
@@ -70,6 +70,14 @@ class SpaceShip{
     method void draw() {
         do Screen.setColor(true);
         do Screen.drawRectangle(x - baseHalfWidth, y-hight, x+baseHalfWidth,y);
+        do Screen.drawRectangle(x - (baseHalfWidth+8), y-(hight/2), x-(baseHalfWidth+6),y);
+        do Screen.drawRectangle(x + baseHalfWidth +6, y-(hight/2), x+baseHalfWidth+8,y);
+        do Screen.drawLine(x-wingWidth, y, x, y-wingWidth);
+        do Screen.drawLine(x+wingWidth, y, x, y-wingWidth);
+        return;
+    }
+
+    method void moveLeft(){
         return;
     }
 }
