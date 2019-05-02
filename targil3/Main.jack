@@ -54,9 +54,19 @@ Keyboard.readInt
 class Main {
     function void main() {
         var SpaceShip spaceShip; 
+
+        var char key;
+        var boolean exit;
+
+        let exit = false;
         let spaceShip = SpaceShip.new();
-        while(true){
-            do Sys.wait(1000);
+        while(~exit) {
+            while(Keyboard.keyPressed() = 130) {
+                do spaceShip.moveLeft();
+            }
+            while(Keyboard.keyPressed() = 132) {
+                do spaceShip.moveRight();
+            }
         }
         return;
     }

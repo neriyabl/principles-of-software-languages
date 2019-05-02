@@ -56,6 +56,7 @@ class SpaceShip{
     field int hight;
     field int baseHalfWidth;
     field int wingWidth;
+    field int speed;
 
     constructor SpaceShip new(){
         let x = 256;
@@ -63,6 +64,7 @@ class SpaceShip{
         let hight = 30;
         let baseHalfWidth=4;
         let wingWidth=20;
+        let speed=8;
 
         do draw();
         return this;
@@ -76,8 +78,41 @@ class SpaceShip{
         do Screen.drawLine(x+wingWidth, y, x, y-wingWidth);
         return;
     }
+    method void eraseOld (int oldX) {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(oldX - baseHalfWidth, y-hight, oldX+baseHalfWidth,y);
+        do Screen.drawRectangle(oldX - (baseHalfWidth+8), y-(hight/2), oldX-(baseHalfWidth+6),y);
+        do Screen.drawRectangle(oldX + baseHalfWidth +6, y-(hight/2), oldX+baseHalfWidth+8,y);
+        do Screen.drawLine(oldX-wingWidth, y, oldX, y-wingWidth);
+        do Screen.drawLine(oldX+wingWidth, y, oldX, y-wingWidth);
+        return;
+    }
 
-    method void moveLeft(){
+    method void moveLeft () {
+        var int oldX;
+        let oldX = x;
+        if(x-speed-wingWidth < 0){
+            let x = wingWidth;
+        }
+        else {
+            let x = x-speed;
+        }
+        do eraseOld(oldX);
+        do draw();
+        return;
+    }
+
+    method void moveRight () {
+        var int oldX;
+        let oldX = x;
+        if(x+speed+wingWidth > 511){
+            let x = 511-wingWidth;
+        }
+        else {
+            let x = x+speed;
+        }
+        do eraseOld(oldX);
+        do draw();
         return;
     }
 }
