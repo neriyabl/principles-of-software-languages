@@ -86,7 +86,6 @@ class Missile{
         let y = y - 2;
         do eraseOld(y+2);
         do draw();
-        do Sys.wait(5);
         return;
     }
 

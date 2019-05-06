@@ -65,7 +65,7 @@ class SpaceShip{
         let hight = 30;
         let baseHalfWidth=4;
         let wingWidth=20;
-        let speed=5;
+        let speed=0;
         let step = 5;
 
         do Screen.setColor(true);

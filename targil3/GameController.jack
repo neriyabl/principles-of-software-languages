@@ -62,10 +62,15 @@ class GameController {
     field Array asteroidArr;
     field Array missilesArr;
     field Missile missile;
+    field int missilesArrPtr, asteroidArrLenght, maxLenght;
 
     constructor GameController new () {
         let spaceShip = SpaceShip.new();
+        let maxLenght = 100;
 
+        let missilesArr = Array.new(maxLenght);
+        let missilesArrPtr = 0;
+        
         return this;
     }
 
@@ -83,11 +88,38 @@ class GameController {
                 do spaceShip.moveRight();
             }
             if(Keyboard.keyPressed() = 32){
-                let missile = spaceShip.shoot();
+                do shoot();
+                do Sys.wait(10);
             }
-            if(~(missile = null)){
-                do missile.move();
+            do moveMissiles();
+        }
+        return;
+    }
+
+    method void shoot () {
+        var Missile _missile;
+        if(missilesArrPtr = maxLenght){
+            let missilesArrPtr = 0;
+        }
+        let _missile = missilesArr[missilesArrPtr];
+        if(~(_missile=null)){
+            do _missile.dispose();
+        }
+        let missilesArr[missilesArrPtr] = spaceShip.shoot();
+        let missilesArrPtr = missilesArrPtr + 1;
+        return;
+    }
+
+    method void moveMissiles () {
+        var int i;
+        var Missile _missile;
+        let i = 0;
+        while( i < maxLenght ){
+            let _missile = missilesArr[i];
+            if(~(_missile = null)){
+                do _missile.move(); 
             }
+            let i = i + 1;
         }
         return;
     }
