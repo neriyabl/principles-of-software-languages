@@ -57,10 +57,42 @@ let do if else while return
 true false null this
 */
 class Missile{
-    field int x, y;
+    field int x, y, radius;
     constructor Missile new (int _x, int _y) {
         let x = _x;
         let y = _y;
+        let radius = 2;
+        do draw();
         return this;
+    }
+
+    method void draw () {
+        do Screen.setColor(false);
+        do Screen.drawCircle(x, y, radius);
+        return;
+    }
+
+    method void eraseOld (int oldY) {
+        do Screen.setColor(true);
+        do Screen.drawCircle(x, oldY, radius);
+        return;
+    }
+
+    method void move () {
+        if(y-5 < 0){
+            do dispose();
+            return;
+        }
+        let y = y - 2;
+        do eraseOld(y+2);
+        do draw();
+        do Sys.wait(5);
+        return;
+    }
+
+    method void dispose () {
+        do eraseOld(y);
+        do Memory.deAlloc(this);
+        return;
     }
 }

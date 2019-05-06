@@ -61,6 +61,7 @@ class GameController {
     field SpaceShip spaceShip;
     field Array asteroidArr;
     field Array missilesArr;
+    field Missile missile;
 
     constructor GameController new () {
         let spaceShip = SpaceShip.new();
@@ -82,8 +83,10 @@ class GameController {
                 do spaceShip.moveRight();
             }
             if(Keyboard.keyPressed() = 32){
-                do Screen.setColor(false);
-                do Screen.drawRectangle(60,60,100,100);
+                let missile = spaceShip.shoot();
+            }
+            if(~(missile = null)){
+                do missile.move();
             }
         }
         return;

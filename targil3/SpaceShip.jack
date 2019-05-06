@@ -132,4 +132,8 @@ class SpaceShip{
         do Sys.wait(speed);
         return;
     }
+
+    method Missile shoot () {
+        return Missile.new(x, y-4);
+    }
 }
