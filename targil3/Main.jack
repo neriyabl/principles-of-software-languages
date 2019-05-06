@@ -49,25 +49,20 @@ Keyboard.keyPressed
 Keyboard.readChar
 Keyboard.readLine
 Keyboard.readInt
+
+field var let static
+constructor method function
+int boolean char void
+let do if else while return
+true false null this
 */
 
 class Main {
+    static GameController gameController;
     function void main() {
-        var SpaceShip spaceShip; 
+        let gameController = GameController.new();
+        do gameController.run();
 
-        var char key;
-        var boolean exit;
-
-        let exit = false;
-        let spaceShip = SpaceShip.new();
-        while(~exit) {
-            while(Keyboard.keyPressed() = 130) {
-                do spaceShip.moveLeft();
-            }
-            while(Keyboard.keyPressed() = 132) {
-                do spaceShip.moveRight();
-            }
-        }
         return;
     }
 }

@@ -1,3 +1,91 @@
-class GameController {
+/**
+Math.abs
+Math.multiply
+Math.divide
+Math.min
+Math.max
+Math.sqrt
 
+String.new
+String.dispose
+String.length
+String.charAt
+String.setCharAt
+String.appendChar
+String.eraseLastChar
+String.intValue
+String.setInt
+String.backSpace
+String.doubleQuote
+String.newLine
+
+Array.new
+Array.dispose
+
+Output.moveCursor
+Output.printChar
+Output.printString
+Output.printInt
+Output.println
+Output.backSpace
+
+Screen.clearScreen
+Screen.setColor
+Screen.drawPixel
+Screen.drawLine
+Screen.drawRectangle
+Screen.drawCircle
+
+Sys.halt
+Sys.error
+Sys.wait
+
+Memory.peek
+Memory.poke
+Memory.alloc
+Memory.deAlloc
+
+Keyboard.keyPressed
+Keyboard.readChar
+Keyboard.readLine
+Keyboard.readInt
+
+field var let static
+constructor method function
+int boolean char void
+let do if else while return
+true false null this
+*/
+class GameController {
+    
+    field SpaceShip spaceShip;
+    field Array asteroidArr;
+    field Array missilesArr;
+
+    constructor GameController new () {
+        let spaceShip = SpaceShip.new();
+
+        return this;
+    }
+
+    method void run () {
+        var char key;
+        var boolean exit;
+
+        let exit = false;
+        let spaceShip = SpaceShip.new();
+        while(~exit) {
+            if(Keyboard.keyPressed() = 130) {
+                do spaceShip.moveLeft();
+            }
+            if(Keyboard.keyPressed() = 132) {
+                do spaceShip.moveRight();
+            }
+            if(Keyboard.keyPressed() = 32){
+                do Screen.setColor(false);
+                do Screen.drawRectangle(60,60,100,100);
+            }
+        }
+        return;
+    }
 }

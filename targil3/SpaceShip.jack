@@ -57,6 +57,7 @@ class SpaceShip{
     field int baseHalfWidth;
     field int wingWidth;
     field int speed;
+    field int step;
 
     constructor SpaceShip new(){
         let x = 256;
@@ -64,55 +65,71 @@ class SpaceShip{
         let hight = 30;
         let baseHalfWidth=4;
         let wingWidth=20;
-        let speed=8;
+        let speed=5;
+        let step = 5;
 
+        do Screen.setColor(true);
+        do Screen.drawRectangle(0,0,511,255);
         do draw();
         return this;
     }
     method void draw() {
-        do Screen.setColor(true);
+        do Screen.setColor(false);
         do Screen.drawRectangle(x - baseHalfWidth, y-hight, x+baseHalfWidth,y);
+        do Screen.drawRectangle(x - (baseHalfWidth+8), y-(hight/2), x-(baseHalfWidth+6),y);
         do Screen.drawRectangle(x - (baseHalfWidth+8), y-(hight/2), x-(baseHalfWidth+6),y);
         do Screen.drawRectangle(x + baseHalfWidth +6, y-(hight/2), x+baseHalfWidth+8,y);
         do Screen.drawLine(x-wingWidth, y, x, y-wingWidth);
+        do Screen.drawLine(x-wingWidth, y, x, y-wingWidth+15);
         do Screen.drawLine(x+wingWidth, y, x, y-wingWidth);
+        do Screen.drawLine(x+wingWidth, y, x, y-wingWidth+15);
         return;
     }
     method void eraseOld (int oldX) {
-        do Screen.setColor(false);
+        do Screen.setColor(true);
         do Screen.drawRectangle(oldX - baseHalfWidth, y-hight, oldX+baseHalfWidth,y);
         do Screen.drawRectangle(oldX - (baseHalfWidth+8), y-(hight/2), oldX-(baseHalfWidth+6),y);
         do Screen.drawRectangle(oldX + baseHalfWidth +6, y-(hight/2), oldX+baseHalfWidth+8,y);
         do Screen.drawLine(oldX-wingWidth, y, oldX, y-wingWidth);
+        do Screen.drawLine(oldX-wingWidth, y, oldX, y-wingWidth+15);
         do Screen.drawLine(oldX+wingWidth, y, oldX, y-wingWidth);
+        do Screen.drawLine(oldX+wingWidth, y, oldX, y-wingWidth+15);
         return;
     }
 
     method void moveLeft () {
         var int oldX;
         let oldX = x;
-        if(x-speed-wingWidth < 0){
+        if(x-wingWidth=0){
+            return;
+        }
+        if(x-1-wingWidth < 0){
             let x = wingWidth;
         }
         else {
-            let x = x-speed;
+            let x = x-1;
         }
         do eraseOld(oldX);
         do draw();
+        do Sys.wait(speed);
         return;
     }
 
     method void moveRight () {
         var int oldX;
         let oldX = x;
-        if(x+speed+wingWidth > 511){
+        if(x+wingWidth = 511){
+            return;
+        }
+        if(x+1+wingWidth > 511){
             let x = 511-wingWidth;
         }
         else {
-            let x = x+speed;
+            let x = x+1;
         }
         do eraseOld(oldX);
         do draw();
+        do Sys.wait(speed);
         return;
     }
 }
