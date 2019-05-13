@@ -60,6 +60,8 @@ true false null this
 class Main {
     static GameController gameController;
     function void main() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(0,0,511,255);
         let gameController = GameController.new();
         do gameController.run();
 

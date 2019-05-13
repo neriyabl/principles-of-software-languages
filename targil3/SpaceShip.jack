@@ -56,8 +56,6 @@ class SpaceShip{
     field int hight;
     field int baseHalfWidth;
     field int wingWidth;
-    field int speed;
-    field int step;
 
     constructor SpaceShip new(){
         let x = 256;
@@ -65,11 +63,7 @@ class SpaceShip{
         let hight = 30;
         let baseHalfWidth=4;
         let wingWidth=20;
-        let speed=0;
-        let step = 5;
 
-        do Screen.setColor(true);
-        do Screen.drawRectangle(0,0,511,255);
         do draw();
         return this;
     }
@@ -111,7 +105,6 @@ class SpaceShip{
         }
         do eraseOld(oldX);
         do draw();
-        do Sys.wait(speed);
         return;
     }
 
@@ -125,11 +118,10 @@ class SpaceShip{
             let x = 511-wingWidth;
         }
         else {
-            let x = x+1;
+            let x = x + 1;
         }
         do eraseOld(oldX);
         do draw();
-        do Sys.wait(speed);
         return;
     }
 

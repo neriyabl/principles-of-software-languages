@@ -66,6 +66,10 @@ class Missile{
         return this;
     }
 
+    method int y () {
+        return y;
+    }
+
     method void draw () {
         do Screen.setColor(false);
         do Screen.drawCircle(x, y, radius);
@@ -79,12 +83,11 @@ class Missile{
     }
 
     method void move () {
-        if(y-5 < 0){
-            do dispose();
+        if(y-3 < 0){
             return;
         }
-        let y = y - 2;
-        do eraseOld(y+2);
+        let y = y - 1;
+        do eraseOld(y+1);
         do draw();
         return;
     }

@@ -66,7 +66,7 @@ class GameController {
 
     constructor GameController new () {
         let spaceShip = SpaceShip.new();
-        let maxLenght = 100;
+        let maxLenght = 10;
 
         let missilesArr = Array.new(maxLenght);
         let missilesArrPtr = 0;
@@ -79,7 +79,7 @@ class GameController {
         var boolean exit;
 
         let exit = false;
-        let spaceShip = SpaceShip.new();
+
         while(~exit) {
             if(Keyboard.keyPressed() = 130) {
                 do spaceShip.moveLeft();
@@ -89,17 +89,28 @@ class GameController {
             }
             if(Keyboard.keyPressed() = 32){
                 do shoot();
-                do Sys.wait(10);
             }
             do moveMissiles();
+            do Sys.wait(0);
         }
         return;
     }
 
     method void shoot () {
         var Missile _missile;
-        if(missilesArrPtr = maxLenght){
-            let missilesArrPtr = 0;
+        var int y; 
+        var int lastPtr;
+        if(missilesArrPtr = 0){
+            let lastPtr = maxLenght - 1;
+        } else {
+            let lastPtr = missilesArrPtr - 1;
+        }
+        let _missile = missilesArr[lastPtr];
+        if(~(_missile=null)){
+            let y = _missile.y();
+            if(y > 220){
+                return;
+            }
         }
         let _missile = missilesArr[missilesArrPtr];
         if(~(_missile=null)){
@@ -107,6 +118,9 @@ class GameController {
         }
         let missilesArr[missilesArrPtr] = spaceShip.shoot();
         let missilesArrPtr = missilesArrPtr + 1;
+        if(missilesArrPtr = maxLenght){
+            let missilesArrPtr = 0;
+        }
         return;
     }
 
@@ -117,7 +131,11 @@ class GameController {
         while( i < maxLenght ){
             let _missile = missilesArr[i];
             if(~(_missile = null)){
-                do _missile.move(); 
+                do _missile.move();
+                if(_missile.y() - 3 < 0){
+                    do _missile.dispose();
+                    let missilesArr[i] = null;
+                }
             }
             let i = i + 1;
         }
