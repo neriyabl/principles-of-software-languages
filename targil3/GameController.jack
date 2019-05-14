@@ -61,15 +61,19 @@ class GameController {
     field SpaceShip spaceShip;
     field Array asteroidArr;
     field Array missilesArr;
-    field Missile missile;
-    field int missilesArrPtr, asteroidArrLenght, maxLenght;
+    field int missilesArrPtr, asteroidArrLength, missileArrLength,asteroidArrPtr;
 
     constructor GameController new () {
         let spaceShip = SpaceShip.new();
-        let maxLenght = 8;
+        let missileArrLength = 8;
+        let asteroidArrLength = 8;
 
-        let missilesArr = Array.new(maxLenght);
+        let asteroidArr=Array.new(asteroidArrLength);
+        let asteroidArrPtr = 0;
+        let missilesArr = Array.new(missileArrLength);
         let missilesArrPtr = 0;
+
+        do Random.seed(123);
         
         return this;
     }
@@ -78,9 +82,13 @@ class GameController {
         var char key;
         var boolean exit;
         var Asteroid a;
-
+        var int randomNum;
+        let randomNum= Random.between(0,100);
         let exit = false;
         let a = Asteroid.new(100, 30, 10, 1, 1);
+
+        
+        
         while(~exit) {
             if(Keyboard.keyPressed() = 130) {
                 do spaceShip.moveLeft();
@@ -91,19 +99,50 @@ class GameController {
             if(Keyboard.keyPressed() = 32){
                 do shoot();
             }
+            do NewAsteroids(randomNum);
             do moveMissiles();
             do a.move();
             do Sys.wait(0);
         }
         return;
     }
+    method void NewAsteroids(int counter)
+{
+    var int Xrandom;
+    var int sizeRandom;
+    var int directionXRandom;
 
+    var Asteroid astroid;
+
+    let sizeRandom=Random.between(5,20);
+    let directionXRandom=Random.between(-3,3);
+    let Xrandom=Random.between(sizeRandom,505-sizeRandom);
+    if (counter>70)
+    {
+        return;
+    }
+
+    let astroid = asteroidArr[asteroidArrPtr];
+    if (astroid=null)
+    {
+        let astroid = Asteroid.new(Xrandom, sizeRandom, sizeRandom,directionXRandom, 1);
+        let asteroidArrPtr=asteroidArrPtr+1;
+        if (asteroidArrPtr=asteroidArrLength)
+        {
+            let asteroidArrPtr=0;
+        }
+    }
+    return;
+
+
+
+}
     method void shoot () {
         var Missile _missile;
         var int y; 
         var int lastPtr;
         if(missilesArrPtr = 0){
-            let lastPtr = maxLenght - 1;
+            let lastPtr = missileArrLength - 1;
         } else {
             let lastPtr = missilesArrPtr - 1;
         }
@@ -120,7 +159,7 @@ class GameController {
         }
         let missilesArr[missilesArrPtr] = spaceShip.shoot();
         let missilesArrPtr = missilesArrPtr + 1;
-        if(missilesArrPtr = maxLenght){
+        if(missilesArrPtr = missileArrLength){
             let missilesArrPtr = 0;
         }
         return;
@@ -130,7 +169,7 @@ class GameController {
         var int i;
         var Missile _missile;
         let i = 0;
-        while( i < maxLenght ){
+        while( i < missileArrLength ){
             let _missile = missilesArr[i];
             if(~(_missile = null)){
                 do _missile.move();
