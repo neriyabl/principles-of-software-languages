@@ -22,22 +22,21 @@ class Random {
 	Returns a mod b. b must be positive.
 	*/
 	function int mod(int a, int b) {
-		if (a < 0) {
-			let a = -a;
+		var int left, mult, result;
+		let left = a / b;
+		let mult = left * b;
+		let result = a - mult;
+		if (result < 0){
+			return -result;
 		}
-
-		while ((a + 1) > b) {
-			let a = a - b;
-		}
-
-		return a;
+		return result;
 	}
 
 	/*
 	Returns the next random number. Can be negative or positive.
 	*/
 	function int next() {
-		let x = 7919 + (17*x);
+		let x = 127 + ((31*x) + (5*x*x));
 		return x;
 	}
 

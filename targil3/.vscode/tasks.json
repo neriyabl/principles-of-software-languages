@@ -6,7 +6,7 @@
     {
       "label": "compile",
       "type": "shell",
-      "command": "cd ../\n./JackCompiler.bat targil3\n./VMEmulator.bat"
+      "command": "cd ../\r\n./JackCompiler.bat targil3\r\n./VMEmulator.bat"
     }
   ]
 }

@@ -57,45 +57,63 @@ let do if else while return
 true false null this
 */
 class Asteroid {
-    field int x, y, size, directionX, directionY, speed, speedCount; 
-    constructor Asteroid new (int _x, int _y, int _size, int _directionX, int _directionY) {
+    field int speed, speedCount;
+    field int x, y, size, directionX, directionY;
+    field int secondX, secondY, secondSize; 
+    constructor Asteroid new (int _x, int _y, int _size, int _directionX, int _speed) {
         let x = _x;
         let y = _y;
         let size = _size;
         let directionX = _directionX;
-        let directionY = _directionY;
+        let directionY = 1;
         let speedCount = 0;
-        let speed = 10;
+        let speed = _speed;
+        let secondX = Random.between(-4, 4);
+        let secondY = Random.between(1, 5);
+        let secondSize = Random.between(size-8, size);
         do draw();
         return this;
     }
     method void draw () {
         do Screen.setColor(false);
         do Screen.drawCircle(x,y,size);
-        do Screen.drawCircle(x+3, y+4, size-2);
+        do Screen.drawCircle(x + secondX, y + secondY, secondSize);
         return;
     }
 
     method void erase () {
         do Screen.setColor(true);
         do Screen.drawCircle(x,y,size);
-        do Screen.drawCircle(x+3, y+4, size-2);
+        do Screen.drawCircle(x + secondX, y + secondY, secondSize);
         return;
     }
 
     method void move () {
         if(speedCount = speed){
             do erase();
-            if(x<(512-size-3) & y<(256-size-4)){
-                let x = x + directionX;
-                let y = y + directionY;
+            let x = x + directionX;
+            let y = y + directionY;
+
+            if(~end()){
                 do draw();
             }
             let speedCount = 0;
         } else {
             let speedCount = speedCount + 1;
         }
+        return;
+    }
 
+    method boolean end() {
+        return (x > (512 - size - (secondSize - secondX))) | (x < (size + secondSize + secondX)) | 
+            (y > (255 - size - secondSize - secondY));
+    }
+
+    method void dispose () {
+        let x = x - directionX;
+        let y = y - directionY; 
+        do erase();
+        do Memory.deAlloc(this);
         return;
     }
 }

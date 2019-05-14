@@ -126,6 +126,6 @@ class SpaceShip{
     }
 
     method Missile shoot () {
-        return Missile.new(x, y-4);
+        return Missile.new(x, y - 4);
     }
 }
