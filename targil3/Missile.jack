@@ -57,11 +57,12 @@ let do if else while return
 true false null this
 */
 class Missile{
-    field int x, y, radius;
+    field int x, y, radius, speedcount;
     constructor Missile new (int _x, int _y) {
         let x = _x;
         let y = _y;
         let radius = 2;
+        let speedcount = 0;
         do draw();
         return this;
     }
@@ -83,12 +84,17 @@ class Missile{
     }
 
     method void move () {
-        if(y-3 < 0){
-            return;
+        if(speedcount = 0){
+            if(y-3 < 0){
+                return;
+            }
+            let y = y - 1;
+            do eraseOld(y+1);
+            do draw();
+            let speedcount = 0;
+        } else {
+            let speedcount = speedcount + 1;
         }
-        let y = y - 1;
-        do eraseOld(y+1);
-        do draw();
         return;
     }
 

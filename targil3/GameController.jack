@@ -66,7 +66,7 @@ class GameController {
 
     constructor GameController new () {
         let spaceShip = SpaceShip.new();
-        let maxLenght = 10;
+        let maxLenght = 8;
 
         let missilesArr = Array.new(maxLenght);
         let missilesArrPtr = 0;
@@ -77,9 +77,10 @@ class GameController {
     method void run () {
         var char key;
         var boolean exit;
+        var Asteroid a;
 
         let exit = false;
-
+        let a = Asteroid.new(100, 30, 10, 1, 1);
         while(~exit) {
             if(Keyboard.keyPressed() = 130) {
                 do spaceShip.moveLeft();
@@ -91,6 +92,7 @@ class GameController {
                 do shoot();
             }
             do moveMissiles();
+            do a.move();
             do Sys.wait(0);
         }
         return;
