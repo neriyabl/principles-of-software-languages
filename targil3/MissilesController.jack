@@ -1,0 +1,121 @@
+/**
+Math.abs
+Math.multiply
+Math.divide
+Math.min
+Math.max
+Math.sqrt
+
+String.new
+String.dispose
+String.length
+String.charAt
+String.setCharAt
+String.appendChar
+String.eraseLastChar
+String.intValue
+String.setInt
+String.backSpace
+String.doubleQuote
+String.newLine
+
+Array.new
+Array.dispose
+
+Output.moveCursor
+Output.printChar
+Output.printString
+Output.printInt
+Output.println
+Output.backSpace
+
+Screen.clearScreen
+Screen.setColor
+Screen.drawPixel
+Screen.drawLine
+Screen.drawRectangle
+Screen.drawCircle
+
+Sys.halt
+Sys.error
+Sys.wait
+
+Memory.peek
+Memory.poke
+Memory.alloc
+Memory.deAlloc
+
+Keyboard.keyPressed
+Keyboard.readChar
+Keyboard.readLine
+Keyboard.readInt
+
+field var let static
+constructor method function
+int boolean char void
+let do if else while return
+true false null this
+*/
+class MissilesController{
+
+    field Array missilesArr;
+    field int missileArrLength, missilesArrPtr;
+
+    constructor MissilesController new () {
+        let missileArrLength = 8;
+
+        let missilesArr = Array.new(missileArrLength);
+        let missilesArrPtr = 0;
+
+        return this;
+    }
+
+    method void shoot (SpaceShip spaceShip) {
+        var Missile _missile;
+        var int y; 
+        var int lastPtr;
+
+        let lastPtr = missilesArrPtr - 1;
+        if(lastPtr = -1){
+            let lastPtr = missileArrLength - 1;
+        }
+
+        if(~(missilesArr[lastPtr] = null)){
+            let _missile = missilesArr[lastPtr];
+            let y = _missile.y();
+            if(y > 220){
+                return;
+            }
+        }
+
+        if(~(missilesArr[missilesArrPtr]=null)){
+            let _missile = missilesArr[missilesArrPtr];
+            do _missile.dispose();
+        }
+        
+        let missilesArr[missilesArrPtr] = spaceShip.shoot();
+        let missilesArrPtr = missilesArrPtr + 1;
+        if(missilesArrPtr = missileArrLength){
+            let missilesArrPtr = 0;
+        }
+        return;
+    }
+
+    method void moveMissiles () {
+        var int i;
+        var Missile _missile;
+        let i = 0;
+        while( i < missileArrLength ){
+            if(~(missilesArr[i] = null)){
+                let _missile = missilesArr[i];
+                do _missile.move();
+                if(_missile.y() - 3 < 0){
+                    do _missile.dispose();
+                    let missilesArr[i] = null;
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+}
