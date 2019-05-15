@@ -68,22 +68,20 @@ class GameController {
         let asteroids = AsteroidsController.new();
         let missiles = MissilesController.new();
 
-        do Random.seed(1);
+        do Random.seed(3);
         let printSatrCounter = 0;
-
         do updateScore(0);
 
         return this;
     }
 
-    method void run () {
-        var char key;
-        var boolean exit;
+    method int run () {
+        var boolean gameOver;
         var int randomNum;
 
-        let exit = false;
-        
-        while(~exit) {
+        let gameOver = false;
+
+        while(~gameOver){
             let randomNum= Random.between(0,10000);
             if(Keyboard.keyPressed() = 130) {
                 do spaceShip.moveLeft();
@@ -99,7 +97,7 @@ class GameController {
             do missiles.moveMissiles();
             do checkMissilesHit();
             if (checkSpaceShipHit()){
-                let exit = true;
+                let gameOver = true;
             }
             let printSatrCounter = printSatrCounter + 1;
             //do Sys.wait(1);
@@ -108,8 +106,7 @@ class GameController {
                 let printSatrCounter = 0;
             }
         }
-
-        return;
+        return score;
     }
 
     method void printStar () {
@@ -143,10 +140,18 @@ class GameController {
     }
 
     method void updateScore (int points) {
+        let score = score + points;
         do Output.moveCursor(0, 0);
         do Output.printString("score: ");
         do Output.printInt(score);
-        let score = score + points;
+        return;
+    }
+
+    method void dispose () {
+        do asteroids.dispose();
+        do missiles.dispose();
+        do spaceShip.dispose();
+        do Memory.deAlloc(this);
         return;
     }
 }

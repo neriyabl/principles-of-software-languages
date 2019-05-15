@@ -137,4 +137,27 @@ class MissilesController{
         let missilesArr[i] = null;
         return;
     }
+
+    method void clear () {
+        var int i;
+        var Missile _missile;
+        let i = 0;
+        while (i < missileArrLength) {
+            if (~(missilesArr[i] = null)){
+                let _missile = missilesArr[i];
+                do _missile.dispose();
+                let missilesArr[i] = null;
+            }
+            let i = i + 1;
+        }
+        let missilesArrPtr = 0;
+        return;
+    }
+
+    method void dispose () {
+        do clear();
+        do missilesArr.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
 }

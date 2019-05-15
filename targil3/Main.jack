@@ -59,7 +59,29 @@ true false null this
 
 class Main {
     static GameController gameController;
+    static int score;
+
     function void main() {
+        var boolean exit;
+        var char key;
+        while(~exit) {
+            let key = 1;
+            do Main.resetScrean();
+            let gameController = GameController.new();
+            let score = gameController.run();
+            do gameController.dispose();
+            do Main.printGameOver();
+            while(~(key = 32) & ~(key=140)){
+                let key = Keyboard.readChar();
+                if (key=140) {
+                    let exit = true;
+                }
+            }
+        }
+        return;
+    }
+
+    function void resetScrean () {
         do Screen.setColor(true);
         do Screen.drawRectangle(0,0,511,255);
         do Screen.setColor(false);
@@ -97,8 +119,21 @@ class Main {
         do Screen.drawPixel(340, 78);
         do Screen.drawPixel(510, 11);
         do Screen.drawPixel(10, 215);
-        let gameController = GameController.new();
-        do gameController.run();
+        return;
+    }
+
+    function void printGameOver () {
+        do Output.moveCursor(7, 26);
+        do Output.printString("game over !!!");
+
+        do Output.moveCursor(10,23);
+        do Output.printString("Your score is: ");
+        do Output.printInt(score);
+
+        do Output.moveCursor(13,18);
+        do Output.printString("press space to restart new game");
+        do Output.moveCursor(14,21);
+        do Output.printString("press escape key to exit");
 
         return;
     }

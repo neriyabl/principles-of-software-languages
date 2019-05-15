@@ -131,4 +131,27 @@ class AsteroidsController {
         }
         return false;
     }
+
+    method void clear () {
+        var int i;
+        var Asteroid _asteroid;
+        let i = 0;
+        while (i < asteroidArrLength) {
+            if (~(asteroidArr[i] = null)){
+                let _asteroid = asteroidArr[i];
+                do _asteroid.dispose();
+                let asteroidArr[i] = null;
+            }
+            let i = i + 1;
+        }
+        let asteroidArrPtr = 0;
+        return;
+    }
+
+    method void dispose () {
+        do clear();
+        do asteroidArr.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
 }

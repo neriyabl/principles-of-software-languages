@@ -137,4 +137,10 @@ class SpaceShip{
     method Missile shoot () {
         return Missile.new(x, y - 4);
     }
+
+    method void dispose () {
+        do eraseOld(x);
+        do Memory.deAlloc(this);
+        return;
+    }
 }

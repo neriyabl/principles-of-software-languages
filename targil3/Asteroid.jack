@@ -113,7 +113,7 @@ class Asteroid {
         var int pawDistanse, xDiff, yDiff, xPaw, yPaw;
         let xDiff = Math.abs(x - _x);
         let yDiff = Math.abs(y - _y);
-        if ( xDiff > 181 | yDiff > 181 ) {
+        if ( xDiff > 180 | yDiff > 180 ) {
             return false;
         }
         let xPaw = (xDiff * xDiff);
