@@ -85,7 +85,7 @@ class AsteroidsController {
             let sizeRandom=Random.between(8, 20);
             let directionXRandom=Random.between(-2, 2);
             let Xrandom = Random.between(sizeRandom + 6, 505 - sizeRandom);
-            let speedRandom = Random.between(5, 10);
+            let speedRandom = Random.between(1, 10);
 
             let asteroidArr[asteroidArrPtr] = Asteroid.new(Xrandom, sizeRandom, sizeRandom,directionXRandom, speedRandom);
             let asteroidArrPtr = asteroidArrPtr+1;
@@ -112,5 +112,23 @@ class AsteroidsController {
             let i = i + 1;
         }
         return;
+    }
+
+    method boolean hit(int x, int y){
+        var int i;
+        var Asteroid _asteroid;
+        let i = 0;
+        while (i < asteroidArrLength) {
+            if (~(asteroidArr[i] = null)){
+                let _asteroid = asteroidArr[i];
+                if(_asteroid.hit(x, y)){
+                    do _asteroid.dispose();
+                    let asteroidArr[i] = null;
+                    return true;
+                }
+            }
+            let i = i + 1;
+        }
+        return false;
     }
 }

@@ -26,10 +26,7 @@ class Random {
 		let left = a / b;
 		let mult = left * b;
 		let result = a - mult;
-		if (result < 0){
-			return -result;
-		}
-		return result;
+		return Math.abs(result);
 	}
 
 	/*

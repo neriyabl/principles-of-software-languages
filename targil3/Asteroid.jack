@@ -109,9 +109,23 @@ class Asteroid {
             (y > (255 - size - secondSize - secondY));
     }
 
+    method boolean hit(int _x,int _y){
+        var int pawDistanse, xDiff, yDiff, xPaw, yPaw;
+        let xDiff = Math.abs(x - _x);
+        let yDiff = Math.abs(y - _y);
+        if ( xDiff > 181 | yDiff > 181 ) {
+            return false;
+        }
+        let xPaw = (xDiff * xDiff);
+        let yPaw = (yDiff * yDiff);
+        let pawDistanse = xPaw + yPaw;
+        if( xPaw < 0 | yPaw < 0 | pawDistanse < 0) {
+            return false;
+        }
+        return pawDistanse < (size * size);
+    }
+
     method void dispose () {
-        let x = x - directionX;
-        let y = y - directionY; 
         do erase();
         do Memory.deAlloc(this);
         return;

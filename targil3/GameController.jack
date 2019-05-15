@@ -61,7 +61,7 @@ class GameController {
     field SpaceShip spaceShip;
     field AsteroidsController asteroids;
     field MissilesController missiles;
-    field int printSatrCounter;
+    field int printSatrCounter, score;
 
     constructor GameController new () {
         let spaceShip = SpaceShip.new();
@@ -70,6 +70,8 @@ class GameController {
 
         do Random.seed(1);
         let printSatrCounter = 0;
+
+        do updateScore(0);
 
         return this;
     }
@@ -95,13 +97,18 @@ class GameController {
             do asteroids.newAsteroid(randomNum);
             do asteroids.moveAsteroids();
             do missiles.moveMissiles();
+            do checkMissilesHit();
+            if (checkSpaceShipHit()){
+                let exit = true;
+            }
             let printSatrCounter = printSatrCounter + 1;
-            do Sys.wait(1);
+            //do Sys.wait(1);
             if (printSatrCounter = 500){
                 do printStar();
                 let printSatrCounter = 0;
             }
         }
+
         return;
     }
 
@@ -111,6 +118,35 @@ class GameController {
         let y = Random.between(0, 256);
         do Screen.setColor(false);
         do Screen.drawPixel(x, y);
+        return;
+    }
+
+    method void checkMissilesHit () {
+        var int i;
+        var Missile _missile;
+        let i = 0;
+        while (i < missiles.length()) {
+            if (~(missiles.at(i) = null)){
+                let _missile = missiles.at(i);
+                if (asteroids.hit(_missile.x(), _missile.y())) {
+                    do missiles.remove(i);
+                    do updateScore(Random.between(5,15));
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method boolean checkSpaceShipHit () {
+        return asteroids.hit(spaceShip.x(), spaceShip.y());
+    }
+
+    method void updateScore (int points) {
+        do Output.moveCursor(0, 0);
+        do Output.printString("score: ");
+        do Output.printInt(score);
+        let score = score + points;
         return;
     }
 }

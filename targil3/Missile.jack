@@ -67,6 +67,10 @@ class Missile{
         return this;
     }
 
+    method int x () {
+        return x;
+    }
+
     method int y () {
         return y;
     }

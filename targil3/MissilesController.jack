@@ -118,4 +118,23 @@ class MissilesController{
         }
         return;
     }
+
+    method int length(){
+        return missileArrLength;
+    }
+
+    method Missile at(int i){
+        if (missilesArr[i] = null){
+            return null;
+        }
+        return missilesArr[i];
+    }
+
+    method void remove (int i) {
+        var Missile _missile;
+        let _missile = missilesArr[i];
+        do _missile.dispose();
+        let missilesArr[i] = null;
+        return;
+    }
 }

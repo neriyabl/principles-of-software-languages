@@ -67,6 +67,15 @@ class SpaceShip{
         do draw();
         return this;
     }
+
+    method int x () {
+        return x;
+    }
+
+    method int y () {
+        return y-hight;
+    }
+
     method void draw() {
         do Screen.setColor(false);
         do Screen.drawRectangle(x - baseHalfWidth, y-hight, x+baseHalfWidth,y);
