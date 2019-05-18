@@ -1,11 +1,6 @@
-/*
-Random Number Generator
-Original author: Taylor Wacker
-Modified by: Connor McKay
-
-This is a pseudo random number generator that uses the
-Linear Congruential Generator (LCG) to generate random
-numbers.
+/**
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 class Random {
 	static int x;

@@ -17,57 +17,30 @@ String.intValue
 String.setInt
 String.backSpace
 String.doubleQuote
-String.newLine
-
-Array.new
-Array.dispose
-
-Output.moveCursor
-Output.printChar
-Output.printString
-Output.printInt
-Output.println
-Output.backSpace
-
-Screen.clearScreen
-Screen.setColor
-Screen.drawPixel
-Screen.drawLine
-Screen.drawRectangle
-Screen.drawCircle
-
-Sys.halt
-Sys.error
-Sys.wait
-
-Memory.peek
-Memory.poke
-Memory.alloc
-Memory.deAlloc
-
-Keyboard.keyPressed
-Keyboard.readChar
-Keyboard.readLine
-Keyboard.readInt
+/**
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 
 class SpaceShip{
+    // -------- fields --------
     field int x, y;
     field int hight;
     field int baseHalfWidth;
     field int wingWidth;
 
+    // ------------- constructor -----------
     constructor SpaceShip new(){
         let x = 256;
         let y = 255;
         let hight = 30;
         let baseHalfWidth=4;
         let wingWidth=20;
-
         do draw();
         return this;
     }
 
+    // ------------- getters ----------
     method int x () {
         return x;
     }
@@ -76,6 +49,11 @@ class SpaceShip{
         return y-hight;
     }
 
+    // -------------- methods ------------
+    
+    /*
+    draw the space ship
+    */
     method void draw() {
         do Screen.setColor(false);
         do Screen.drawRectangle(x - baseHalfWidth, y-hight, x+baseHalfWidth,y);
@@ -88,6 +66,10 @@ class SpaceShip{
         do Screen.drawLine(x+wingWidth, y, x, y-wingWidth+15);
         return;
     }
+
+    /*
+    erase the space ship at oldX
+    */
     method void eraseOld (int oldX) {
         do Screen.setColor(true);
         do Screen.drawRectangle(oldX - baseHalfWidth, y-hight, oldX+baseHalfWidth,y);
@@ -100,6 +82,9 @@ class SpaceShip{
         return;
     }
 
+    /*
+    move the space ship left
+    */
     method void moveLeft () {
         var int oldX;
         let oldX = x;
@@ -117,6 +102,9 @@ class SpaceShip{
         return;
     }
 
+    /*
+    move the space ship right
+    */
     method void moveRight () {
         var int oldX;
         let oldX = x;
@@ -134,10 +122,16 @@ class SpaceShip{
         return;
     }
 
+    /*
+    create missile from the position of the space ship and return it
+    */
     method Missile shoot () {
         return Missile.new(x, y - 4);
     }
 
+    /*
+    erase the space ship from screen and dispose
+    */
     method void dispose () {
         do eraseOld(x);
         do Memory.deAlloc(this);

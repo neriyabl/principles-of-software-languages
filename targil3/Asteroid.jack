@@ -1,65 +1,15 @@
 /**
-Math.abs
-Math.multiply
-Math.divide
-Math.min
-Math.max
-Math.sqrt
-
-String.new
-String.dispose
-String.length
-String.charAt
-String.setCharAt
-String.appendChar
-String.eraseLastChar
-String.intValue
-String.setInt
-String.backSpace
-String.doubleQuote
-String.newLine
-
-Array.new
-Array.dispose
-
-Output.moveCursor
-Output.printChar
-Output.printString
-Output.printInt
-Output.println
-Output.backSpace
-
-Screen.clearScreen
-Screen.setColor
-Screen.drawPixel
-Screen.drawLine
-Screen.drawRectangle
-Screen.drawCircle
-
-Sys.halt
-Sys.error
-Sys.wait
-
-Memory.peek
-Memory.poke
-Memory.alloc
-Memory.deAlloc
-
-Keyboard.keyPressed
-Keyboard.readChar
-Keyboard.readLine
-Keyboard.readInt
-
-field var let static
-constructor method function
-int boolean char void
-let do if else while return
-true false null this
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 class Asteroid {
+
+    // -------------- fields ----------
     field int speed, speedCount;
     field int x, y, size, directionX, directionY;
-    field int secondX, secondY, secondSize; 
+    field int secondX, secondY, secondSize;
+
+    // -------------- constructor ---------- 
     constructor Asteroid new (int _x, int _y, int _size, int _directionX, int _speed) {
         let x = _x;
         let y = _y;
@@ -74,6 +24,8 @@ class Asteroid {
         do draw();
         return this;
     }
+
+    // ------------- methods -----------
     method void draw () {
         do Screen.setColor(false);
         do Screen.drawCircle(x,y,size);
@@ -88,6 +40,9 @@ class Asteroid {
         return;
     }
 
+    /*
+    move just if speedCount equal to speed
+    */
     method void move () {
         if(speedCount = speed){
             do erase();
@@ -104,11 +59,17 @@ class Asteroid {
         return;
     }
 
+    /*
+    check if the asteroid came to end of the screen
+    */
     method boolean end() {
         return (x > (510 - size - (secondSize - secondX))) | (x < (size + secondSize + secondX)) | 
             (y > (255 - size - secondSize - secondY));
     }
 
+    /*
+    checck if the given x, y is a point on the asteroid (asterid cant be biger then 80)
+    */
     method boolean hit(int _x,int _y){
         var int pawDistanse, xDiff, yDiff, xPaw, yPaw;
         let xDiff = Math.abs(x - _x);
@@ -125,6 +86,9 @@ class Asteroid {
         return pawDistanse < (size * size);
     }
 
+    /*
+    remove the asteroid from screen and dispose
+    */
     method void dispose () {
         do erase();
         do Memory.deAlloc(this);

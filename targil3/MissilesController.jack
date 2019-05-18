@@ -5,62 +5,17 @@ Math.divide
 Math.min
 Math.max
 Math.sqrt
-
-String.new
-String.dispose
-String.length
-String.charAt
-String.setCharAt
-String.appendChar
-String.eraseLastChar
-String.intValue
-String.setInt
-String.backSpace
-String.doubleQuote
-String.newLine
-
-Array.new
-Array.dispose
-
-Output.moveCursor
-Output.printChar
-Output.printString
-Output.printInt
-Output.println
-Output.backSpace
-
-Screen.clearScreen
-Screen.setColor
-Screen.drawPixel
-Screen.drawLine
-Screen.drawRectangle
-Screen.drawCircle
-
-Sys.halt
-Sys.error
-Sys.wait
-
-Memory.peek
-Memory.poke
-Memory.alloc
-Memory.deAlloc
-
-Keyboard.keyPressed
-Keyboard.readChar
-Keyboard.readLine
-Keyboard.readInt
-
-field var let static
-constructor method function
-int boolean char void
-let do if else while return
-true false null this
+/**
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 class MissilesController{
 
+    //------ fields ------
     field Array missilesArr;
     field int missileArrLength, missilesArrPtr;
 
+    //--------- constructor ---------
     constructor MissilesController new () {
         var int i;
         let missileArrLength = 8;
@@ -74,7 +29,16 @@ class MissilesController{
 
         return this;
     }
+    //---------- getter ---------
+    method int length(){
+        return missileArrLength;
+    }
 
+    //---------- methods --------------
+    
+    /*
+    create new missile from the position of the spaceShip argument
+    */
     method void shoot (SpaceShip spaceShip) {
         var Missile _missile;
         var int y; 
@@ -106,6 +70,9 @@ class MissilesController{
         return;
     }
 
+    /*
+    move all missiles in the array
+    */
     method void moveMissiles () {
         var int i;
         var Missile _missile;
@@ -124,10 +91,9 @@ class MissilesController{
         return;
     }
 
-    method int length(){
-        return missileArrLength;
-    }
-
+    /*
+    reurn a missile at the given i
+    */
     method Missile at(int i){
         if (missilesArr[i] = null){
             return null;
@@ -135,6 +101,9 @@ class MissilesController{
         return missilesArr[i];
     }
 
+    /*
+    remove the missile at index i
+    */
     method void remove (int i) {
         var Missile _missile;
         let _missile = missilesArr[i];
@@ -143,15 +112,15 @@ class MissilesController{
         return;
     }
 
+    /*
+    remove all the missiles
+    */
     method void clear () {
         var int i;
-        var Missile _missile;
         let i = 0;
         while (i < missileArrLength) {
             if (~(missilesArr[i] = null)){
-                let _missile = missilesArr[i];
-                do _missile.dispose();
-                let missilesArr[i] = null;
+                do remove(i);
             }
             let i = i + 1;
         }
@@ -159,6 +128,9 @@ class MissilesController{
         return;
     }
 
+    /*
+    clear all and dispose array and memory
+    */
     method void dispose () {
         do clear();
         do missilesArr.dispose();

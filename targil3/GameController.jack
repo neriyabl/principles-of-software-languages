@@ -1,68 +1,16 @@
 /**
-Math.abs
-Math.multiply
-Math.divide
-Math.min
-Math.max
-Math.sqrt
-
-String.new
-String.dispose
-String.length
-String.charAt
-String.setCharAt
-String.appendChar
-String.eraseLastChar
-String.intValue
-String.setInt
-String.backSpace
-String.doubleQuote
-String.newLine
-
-Array.new
-Array.dispose
-
-Output.moveCursor
-Output.printChar
-Output.printString
-Output.printInt
-Output.println
-Output.backSpace
-
-Screen.clearScreen
-Screen.setColor
-Screen.drawPixel
-Screen.drawLine
-Screen.drawRectangle
-Screen.drawCircle
-
-Sys.halt
-Sys.error
-Sys.wait
-
-Memory.peek
-Memory.poke
-Memory.alloc
-Memory.deAlloc
-
-Keyboard.keyPressed
-Keyboard.readChar
-Keyboard.readLine
-Keyboard.readInt
-
-field var let static
-constructor method function
-int boolean char void
-let do if else while return
-true false null this
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 class GameController {
     
+    // ---------- fields -----------
     field SpaceShip spaceShip;
     field AsteroidsController asteroids;
     field MissilesController missiles;
     field int printSatrCounter, score;
 
+    // --------- constructor -----------
     constructor GameController new () {
         let spaceShip = SpaceShip.new();
         let asteroids = AsteroidsController.new();
@@ -73,6 +21,13 @@ class GameController {
         return this;
     }
 
+    // ------------ methods -------------
+    /*
+    run one game while not game over
+    move the spaceShip left or right
+    if space prased shot new missil
+    and do more things
+    */
     method int run () {
         var boolean gameOver;
         var int randomNum;
@@ -80,7 +35,7 @@ class GameController {
         let gameOver = false;
 
         while(~gameOver){
-            let randomNum= Random.between(0,10000);
+            let randomNum= Random.between(0,1000);
             if(Keyboard.keyPressed() = 130) {
                 do spaceShip.moveLeft();
             }
@@ -90,16 +45,22 @@ class GameController {
             if(Keyboard.keyPressed() = 32) {
                 do missiles.shoot(spaceShip);
             }
+            // create new asteroid (if randNum > 990)
             do asteroids.newAsteroid(randomNum);
+            //move all the asteroids
             do asteroids.moveAsteroids();
+            //move all the missiles
             do missiles.moveMissiles();
+            // check if some missile hit some asteroid
             do checkMissilesHit();
+            // check if some asteroid hit the space ship if true its game over
             if (checkSpaceShipHit()){
                 let gameOver = true;
             }
             let printSatrCounter = printSatrCounter + 1;
-            //do Sys.wait(1);
+
             if (printSatrCounter = 500){
+            // print some star because they erase by the asteroids
                 do printStar();
                 let printSatrCounter = 0;
             }
@@ -107,6 +68,9 @@ class GameController {
         return score;
     }
 
+    /*
+    print star (pixel) in a random place on the screen
+    */
     method void printStar () {
         var int x, y;
         let x = Random.between(0, 512);
@@ -116,6 +80,9 @@ class GameController {
         return;
     }
 
+    /*
+    check if some missile hit some asteroid if true remove the missile and update score
+    */
     method void checkMissilesHit () {
         var int i;
         var Missile _missile;
@@ -133,10 +100,16 @@ class GameController {
         return;
     }
 
+    /*
+    check if some asteroid hit the space ship
+    */
     method boolean checkSpaceShipHit () {
         return asteroids.hit(spaceShip.x(), spaceShip.y());
     }
 
+    /*
+    update the score by the given number of points
+    */
     method void updateScore (int points) {
         let score = score + points;
         do Output.moveCursor(0, 0);
@@ -145,6 +118,9 @@ class GameController {
         return;
     }
 
+    /*
+    dispose the controllers, spaceship and memory
+    */
     method void dispose () {
         do asteroids.dispose();
         do missiles.dispose();

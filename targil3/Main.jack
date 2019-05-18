@@ -1,66 +1,16 @@
 /**
-Math.abs
-Math.multiply
-Math.divide
-Math.min
-Math.max
-Math.sqrt
-
-String.new
-String.dispose
-String.length
-String.charAt
-String.setCharAt
-String.appendChar
-String.eraseLastChar
-String.intValue
-String.setInt
-String.backSpace
-String.doubleQuote
-String.newLine
-
-Array.new
-Array.dispose
-
-Output.moveCursor
-Output.printChar
-Output.printString
-Output.printInt
-Output.println
-Output.backSpace
-
-Screen.clearScreen
-Screen.setColor
-Screen.drawPixel
-Screen.drawLine
-Screen.drawRectangle
-Screen.drawCircle
-
-Sys.halt
-Sys.error
-Sys.wait
-
-Memory.peek
-Memory.poke
-Memory.alloc
-Memory.deAlloc
-
-Keyboard.keyPressed
-Keyboard.readChar
-Keyboard.readLine
-Keyboard.readInt
-
-field var let static
-constructor method function
-int boolean char void
-let do if else while return
-true false null this
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 
 class Main {
     static GameController gameController;
     static int score;
 
+    /*
+    the main func run the game 
+    each round is the run method in gameController
+    */
     function void main() {
         var boolean exit;
         var char key;
@@ -82,6 +32,10 @@ class Main {
         return;
     }
 
+    /*
+    set the screen to black
+    and put some stars (white pixels)
+    */
     function void resetScrean () {
         do Screen.setColor(true);
         do Screen.drawRectangle(0,0,511,255);
@@ -123,6 +77,9 @@ class Main {
         return;
     }
 
+    /*
+    when the round over print game over and the score
+    */
     function void printGameOver () {
         do Output.moveCursor(7, 26);
         do Output.printString("GAME OVER !!!");

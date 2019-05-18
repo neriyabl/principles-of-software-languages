@@ -1,65 +1,13 @@
 /**
-Math.abs
-Math.multiply
-Math.divide
-Math.min
-Math.max
-Math.sqrt
-
-String.new
-String.dispose
-String.length
-String.charAt
-String.setCharAt
-String.appendChar
-String.eraseLastChar
-String.intValue
-String.setInt
-String.backSpace
-String.doubleQuote
-String.newLine
-
-Array.new
-Array.dispose
-
-Output.moveCursor
-Output.printChar
-Output.printString
-Output.printInt
-Output.println
-Output.backSpace
-
-Screen.clearScreen
-Screen.setColor
-Screen.drawPixel
-Screen.drawLine
-Screen.drawRectangle
-Screen.drawCircle
-
-Sys.halt
-Sys.error
-Sys.wait
-
-Memory.peek
-Memory.poke
-Memory.alloc
-Memory.deAlloc
-
-Keyboard.keyPressed
-Keyboard.readChar
-Keyboard.readLine
-Keyboard.readInt
-
-field var let static
-constructor method function
-int boolean char void
-let do if else while return
-true false null this
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 class AsteroidsController {
+    //--------- fields -----------
     field Array asteroidArr;
     field int asteroidArrLength, asteroidArrPtr;
     
+    //---------- constructor ----------
     constructor AsteroidsController new () {
         var int i;
         let asteroidArrLength = 8;
@@ -73,6 +21,11 @@ class AsteroidsController {
         return this;
     }
 
+    //---------- methods ---------
+
+    /*
+    create new  asteroid in 0.01%
+    */
     method void newAsteroid(int chance) {
         var int Xrandom;
         var int sizeRandom;
@@ -80,7 +33,7 @@ class AsteroidsController {
         var int speedRandom;
         var Asteroid astroid;
 
-        if (chance < 9900) {
+        if (chance < 990) {
             return;
         }
 
@@ -100,6 +53,9 @@ class AsteroidsController {
         return;
     }
 
+    /*
+    move all the asteroids
+    */
     method void moveAsteroids () {
         var int i;
         var Asteroid _asteroid;
@@ -118,6 +74,10 @@ class AsteroidsController {
         return;
     }
 
+    /*
+    check if some asteroid is hit 
+    if yes remove the asteroid and return true
+    */
     method boolean hit(int x, int y){
         var int i;
         var Asteroid _asteroid;
@@ -136,6 +96,9 @@ class AsteroidsController {
         return false;
     }
 
+    /*
+    remove all the asteroids from the array
+    */
     method void clear () {
         var int i;
         var Asteroid _asteroid;
@@ -152,6 +115,9 @@ class AsteroidsController {
         return;
     }
 
+    /*
+    clear all and dispose array and memory
+    */
     method void dispose () {
         do clear();
         do asteroidArr.dispose();

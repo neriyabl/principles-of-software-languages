@@ -1,62 +1,9 @@
 /**
-Math.abs
-Math.multiply
-Math.divide
-Math.min
-Math.max
-Math.sqrt
-
-String.new
-String.dispose
-String.length
-String.charAt
-String.setCharAt
-String.appendChar
-String.eraseLastChar
-String.intValue
-String.setInt
-String.backSpace
-String.doubleQuote
-String.newLine
-
-Array.new
-Array.dispose
-
-Output.moveCursor
-Output.printChar
-Output.printString
-Output.printInt
-Output.println
-Output.backSpace
-
-Screen.clearScreen
-Screen.setColor
-Screen.drawPixel
-Screen.drawLine
-Screen.drawRectangle
-Screen.drawCircle
-
-Sys.halt
-Sys.error
-Sys.wait
-
-Memory.peek
-Memory.poke
-Memory.alloc
-Memory.deAlloc
-
-Keyboard.keyPressed
-Keyboard.readChar
-Keyboard.readLine
-Keyboard.readInt
-
-field var let static
-constructor method function
-int boolean char void
-let do if else while return
-true false null this
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
 */
 class Missile{
+    // -------- fields -------
     field int x, y, radius, speedcount;
     constructor Missile new (int _x, int _y) {
         let x = _x;
@@ -67,6 +14,7 @@ class Missile{
         return this;
     }
 
+    // --------- geters ----------
     method int x () {
         return x;
     }
@@ -75,18 +23,27 @@ class Missile{
         return y;
     }
 
+
+    // ---------- methods ---------
+
     method void draw () {
         do Screen.setColor(false);
         do Screen.drawCircle(x, y, radius);
         return;
     }
 
+    /*
+    erase the missile to move or just remove
+    */
     method void eraseOld (int oldY) {
         do Screen.setColor(true);
         do Screen.drawCircle(x, oldY, radius);
         return;
     }
 
+    /*
+    move if not came to end
+    */
     method void move () {
         if(speedcount = 0){
             if(y-3 < 0){
@@ -102,6 +59,9 @@ class Missile{
         return;
     }
 
+    /*
+    remove the missile from screen end dispose
+    */
     method void dispose () {
         do eraseOld(y);
         do Memory.deAlloc(this);
