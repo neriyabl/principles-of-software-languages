@@ -61,11 +61,15 @@ class AsteroidsController {
     field int asteroidArrLength, asteroidArrPtr;
     
     constructor AsteroidsController new () {
+        var int i;
         let asteroidArrLength = 8;
-
         let asteroidArr=Array.new(asteroidArrLength);
+        let i = 0;
+        while (i < asteroidArrLength) {
+            let asteroidArr[i] = null;
+            let i = i + 1;
+        }
         let asteroidArrPtr = 0;
-
         return this;
     }
 
@@ -76,7 +80,7 @@ class AsteroidsController {
         var int speedRandom;
         var Asteroid astroid;
 
-        if (chance < 9950) {
+        if (chance < 9900) {
             return;
         }
 

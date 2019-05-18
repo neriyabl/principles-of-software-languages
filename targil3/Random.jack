@@ -33,7 +33,7 @@ class Random {
 	Returns the next random number. Can be negative or positive.
 	*/
 	function int next() {
-		let x = 127 + ((31*x) + (5*x*x));
+		let x = 127 + (31*x) + (11*x*x);
 		return x;
 	}
 

@@ -68,10 +68,8 @@ class GameController {
         let asteroids = AsteroidsController.new();
         let missiles = MissilesController.new();
 
-        do Random.seed(3);
         let printSatrCounter = 0;
         do updateScore(0);
-
         return this;
     }
 

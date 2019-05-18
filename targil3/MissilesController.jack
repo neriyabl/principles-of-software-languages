@@ -62,9 +62,14 @@ class MissilesController{
     field int missileArrLength, missilesArrPtr;
 
     constructor MissilesController new () {
+        var int i;
         let missileArrLength = 8;
-
         let missilesArr = Array.new(missileArrLength);
+        let i = 0;
+        while (i < missileArrLength) {
+            let missilesArr[i] = null;
+            let i = i + 1;
+        }
         let missilesArrPtr = 0;
 
         return this;

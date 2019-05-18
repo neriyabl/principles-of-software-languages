@@ -64,6 +64,7 @@ class Main {
     function void main() {
         var boolean exit;
         var char key;
+        do Random.seed(11);
         while(~exit) {
             let key = 1;
             do Main.resetScrean();
@@ -124,7 +125,7 @@ class Main {
 
     function void printGameOver () {
         do Output.moveCursor(7, 26);
-        do Output.printString("game over !!!");
+        do Output.printString("GAME OVER !!!");
 
         do Output.moveCursor(10,23);
         do Output.printString("Your score is: ");

@@ -105,7 +105,7 @@ class Asteroid {
     }
 
     method boolean end() {
-        return (x > (512 - size - (secondSize - secondX))) | (x < (size + secondSize + secondX)) | 
+        return (x > (510 - size - (secondSize - secondX))) | (x < (size + secondSize + secondX)) | 
             (y > (255 - size - secondSize - secondY));
     }
 
@@ -113,7 +113,7 @@ class Asteroid {
         var int pawDistanse, xDiff, yDiff, xPaw, yPaw;
         let xDiff = Math.abs(x - _x);
         let yDiff = Math.abs(y - _y);
-        if ( xDiff > 180 | yDiff > 180 ) {
+        if ( xDiff > 80 | yDiff > 80 ) {
             return false;
         }
         let xPaw = (xDiff * xDiff);
