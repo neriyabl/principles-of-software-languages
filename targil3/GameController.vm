@@ -1,0 +1,242 @@
+function GameController.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+call SpaceShip.new 0
+pop this 0
+call AsteroidsController.new 0
+pop this 1
+call MissilesController.new 0
+pop this 2
+push constant 0
+pop this 4
+push constant 0
+pop this 3
+push pointer 0
+push constant 0
+call GameController.updateScore 2
+pop temp 0
+push pointer 0
+return
+function GameController.run 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+not
+not
+if-goto WHILE_END0
+push constant 0
+push constant 1000
+call Random.between 2
+pop local 1
+call Keyboard.keyPressed 0
+push constant 130
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+call SpaceShip.moveLeft 1
+pop temp 0
+label IF_FALSE0
+call Keyboard.keyPressed 0
+push constant 132
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+call SpaceShip.moveRight 1
+pop temp 0
+label IF_FALSE1
+call Keyboard.keyPressed 0
+push constant 32
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 2
+push this 0
+call MissilesController.shoot 2
+pop temp 0
+label IF_FALSE2
+push this 1
+push local 1
+call AsteroidsController.newAsteroid 2
+pop temp 0
+push this 1
+call AsteroidsController.moveAsteroids 1
+pop temp 0
+push this 2
+call MissilesController.moveMissiles 1
+pop temp 0
+push pointer 0
+call GameController.checkMissilesHit 1
+pop temp 0
+push pointer 0
+call GameController.checkSpaceShipHit 1
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+not
+pop local 0
+label IF_FALSE3
+push this 3
+push constant 1
+add
+pop this 3
+push this 3
+push constant 500
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+call GameController.printStar 1
+pop temp 0
+push constant 0
+pop this 3
+label IF_FALSE4
+goto WHILE_EXP0
+label WHILE_END0
+push this 4
+return
+function GameController.printStar 2
+push argument 0
+pop pointer 0
+push constant 0
+push constant 512
+call Random.between 2
+pop local 0
+push constant 0
+push constant 256
+call Random.between 2
+pop local 1
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 0
+push local 1
+call Screen.drawPixel 2
+pop temp 0
+push constant 0
+return
+function GameController.checkMissilesHit 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 2
+call MissilesController.length 1
+lt
+not
+if-goto WHILE_END0
+push this 2
+push local 0
+call MissilesController.at 2
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 2
+push local 0
+call MissilesController.at 2
+pop local 1
+push this 1
+push local 1
+call Missile.x 1
+push local 1
+call Missile.y 1
+call AsteroidsController.hit 3
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 2
+push local 0
+call MissilesController.remove 2
+pop temp 0
+push pointer 0
+push constant 5
+push constant 15
+call Random.between 2
+call GameController.updateScore 2
+pop temp 0
+label IF_FALSE1
+label IF_FALSE0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function GameController.checkSpaceShipHit 0
+push argument 0
+pop pointer 0
+push this 1
+push this 0
+call SpaceShip.x 1
+push this 0
+call SpaceShip.y 1
+call AsteroidsController.hit 3
+return
+function GameController.updateScore 0
+push argument 0
+pop pointer 0
+push this 4
+push argument 1
+add
+pop this 4
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+push constant 7
+call String.new 1
+push constant 115
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 58
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push this 4
+call Output.printInt 1
+pop temp 0
+push constant 0
+return
+function GameController.dispose 0
+push argument 0
+pop pointer 0
+push this 1
+call AsteroidsController.dispose 1
+pop temp 0
+push this 2
+call MissilesController.dispose 1
+pop temp 0
+push this 0
+call SpaceShip.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

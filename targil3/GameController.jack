@@ -15,6 +15,7 @@ class GameController {
         let spaceShip = SpaceShip.new();
         let asteroids = AsteroidsController.new();
         let missiles = MissilesController.new();
+        let score = 0;
 
         let printSatrCounter = 0;
         do updateScore(0);

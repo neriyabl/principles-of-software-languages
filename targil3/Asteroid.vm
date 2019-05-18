@@ -1,0 +1,229 @@
+function Asteroid.new 0
+push constant 10
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 2
+push argument 1
+pop this 3
+push argument 2
+pop this 4
+push argument 3
+pop this 5
+push constant 1
+pop this 6
+push constant 0
+pop this 1
+push argument 4
+pop this 0
+push constant 4
+neg
+push constant 4
+call Random.between 2
+pop this 7
+push constant 1
+push constant 5
+call Random.between 2
+pop this 8
+push this 4
+push constant 8
+sub
+push this 4
+call Random.between 2
+pop this 9
+push pointer 0
+call Asteroid.draw 1
+pop temp 0
+push pointer 0
+return
+function Asteroid.draw 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 2
+push this 3
+push this 4
+call Screen.drawCircle 3
+pop temp 0
+push this 2
+push this 7
+add
+push this 3
+push this 8
+add
+push this 9
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+function Asteroid.erase 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 2
+push this 3
+push this 4
+call Screen.drawCircle 3
+pop temp 0
+push this 2
+push this 7
+add
+push this 3
+push this 8
+add
+push this 9
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+function Asteroid.move 0
+push argument 0
+pop pointer 0
+push this 1
+push this 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Asteroid.erase 1
+pop temp 0
+push this 2
+push this 5
+add
+pop this 2
+push this 3
+push this 6
+add
+pop this 3
+push pointer 0
+call Asteroid.end 1
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Asteroid.draw 1
+pop temp 0
+label IF_FALSE1
+push constant 0
+pop this 1
+goto IF_END0
+label IF_FALSE0
+push this 1
+push constant 1
+add
+pop this 1
+label IF_END0
+push constant 0
+return
+function Asteroid.end 0
+push argument 0
+pop pointer 0
+push this 2
+push constant 510
+push this 4
+sub
+push this 9
+push this 7
+sub
+sub
+gt
+push this 2
+push this 4
+push this 9
+add
+push this 7
+add
+push constant 2
+add
+lt
+or
+push this 3
+push constant 255
+push this 4
+sub
+push this 9
+sub
+push this 8
+sub
+gt
+or
+return
+function Asteroid.hit 5
+push argument 0
+pop pointer 0
+push this 2
+push argument 1
+sub
+call Math.abs 1
+pop local 1
+push this 3
+push argument 2
+sub
+call Math.abs 1
+pop local 2
+push local 1
+push constant 80
+gt
+push local 2
+or
+push constant 80
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 1
+push local 1
+call Math.multiply 2
+pop local 3
+push local 2
+push local 2
+call Math.multiply 2
+pop local 4
+push local 3
+push local 4
+add
+pop local 0
+push local 3
+push constant 0
+lt
+push local 4
+or
+push constant 0
+lt
+push local 0
+or
+push constant 0
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+push local 0
+push this 4
+push this 4
+call Math.multiply 2
+lt
+return
+function Asteroid.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Asteroid.erase 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

@@ -63,7 +63,7 @@ class Asteroid {
     check if the asteroid came to end of the screen
     */
     method boolean end() {
-        return (x > (510 - size - (secondSize - secondX))) | (x < (size + secondSize + secondX)) | 
+        return (x > (510 - size - (secondSize - secondX))) | (x < (size + secondSize + secondX + 2)) | 
             (y > (255 - size - secondSize - secondY));
     }
 
