@@ -24,9 +24,68 @@ class Tokenizer {
     return inputFileText[nextIndex++];
   }
 
+  void ExportFileToXML(List<Token> tokenStream,String JackFileName)
+  {
+    String startTok="<token>\n";
+    String resultedXML="";
+    String EndTok="</token>";
+
+    String startTokVal;
+    String tokenValue;
+    String EndTokVal;
+    for (int i=0;i<tokenStream.length;i++)
+    {
+      TokenType tokenType=tokenStream[i].type;
+      switch (tokenType.toString())
+      {
+        case 'keyword':
+          startTokVal="<keyword>";
+          tokenValue=tokenStream[i].value;
+          EndTokVal="</keyword>\n";
+          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
+          break;
+        case 'symbol':
+          startTokVal="<symbol>";
+          tokenValue=tokenStream[i].value;
+          EndTokVal="</symbol>\n";
+          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
+          break;
+        case 'integerConstant':
+          startTokVal="<integerConstant>";
+          tokenValue=tokenStream[i].value;
+          EndTokVal="</integerConstant>\n";
+          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
+          break;
+        case 'stringConstant':
+          startTokVal="<stringConstant>";
+          tokenValue=tokenStream[i].value;
+          EndTokVal="</stringConstant>\n";
+          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
+          break;
+        case 'identifier':
+          startTokVal="<identifier>";
+          tokenValue=tokenStream[i].value;
+          EndTokVal="</identifier>\n";
+          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
+          break;
+      }
+    }
+    resultedXML = startTok + resultedXML +"\n"+ EndTok;
+/////////////////////to verify input as XML//////////////////
+    try {
+      //var document = xml.parse(bookshelfXml);
+    }
+    on Exception catch(e) {}
+
+////////////////////create text file and write xml//////////////////
+    //var XmlFile = new File(JackFileName + 'T.XML').openWrite();
+    //XmlFile.write(resultedXML);
+  }
+
+
+
   initialState () {
     for()
   }
-
 
 }
