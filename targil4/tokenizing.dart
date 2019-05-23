@@ -36,12 +36,12 @@ class Tokenizer {
       buffer += inputFileText[0];
       inputFileText = inputFileText.substring(1);
       _regExMap.forEach((key, val) => {
-            if (val.hasMatch(buffer)) {checkAndGenerateToken(key)}
+            if (val.hasMatch(buffer)) {_checkAndGenerateToken(key)}
           });
     }
   }
 
-  checkAndGenerateToken(String key) {
+  _checkAndGenerateToken(String key) {
     if (inputFileText.length > 0 &&
         _regExMap[key].hasMatch(buffer + inputFileText[0])) return;
     outputTokenList.add(Token(
@@ -56,8 +56,11 @@ class Tokenizer {
     }
   }
 
-  void exportFileToXML(List<Token> tokenStream, String JackFileName) {
+  exportFileToXML(String JackFileName, {List<Token> tokenStream = null}) {
     String resultedXML = '<tokens>\n';
+    if(tokenStream == null){
+      tokenStream = outputTokenList;
+    }
 
     for (var token in tokenStream) {
       var tokenType = getTokenString(token.type);
@@ -73,18 +76,18 @@ class Tokenizer {
 
 main() {
   var tokenizer = new Tokenizer('var int a;\n'
-    'var String b;\n'
-    'let a = 9;\n'
-    'let b = "hello world"\n'
-    '//this is comment\n'
-    '/*try\n'
-    'multi\n'
-    'line\n'
-    'comment\n*/\n'
-    'do func(a);');
+      'var String b;\n'
+      'let a = 9;\n'
+      'let b = "hello world";\n'
+      '//this is comment\n'
+      '/*try\n'
+      'multi\n'
+      'line\n'
+      'comment\n*/\n'
+      'do func(a);');
 
   print('generate tokens...');
   tokenizer.generateTokens();
   print('export to xml file...');
-  tokenizer.exportFileToXML(tokenizer.outputTokenList, 'test');
+  tokenizer.exportFileToXML('test');
 }
