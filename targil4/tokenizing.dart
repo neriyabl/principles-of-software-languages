@@ -1,91 +1,90 @@
-import 'dart:html';
-
+import 'dart:io';
 import 'Entities.dart';
 
-
-enum States { s0,
-  symbol }
-
 class Tokenizer {
-  final _keyword = new RegExp(
+  static final _commentLine = new RegExp(r'//[^\n]*');
+  static final _commentMultyLint = new RegExp(r'/\*[\s\S]*\*/');
+  static final _keyword = new RegExp(
       r'^(class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)$');
-  final _symbol = new RegExp(r"^([{}()\[\].,;+\-*/&|<>=~])$");
-  final _integerConstant = new RegExp(r'^([1-2]?[0-9]?[0-9]?[0-9]?[0-9]|3[0-1][0-9]{3}|32[0-6][0-9]{2}|327[0-5][0-9]|3276[0-7])$');
-  final _stringConstant = new RegExp(r'^"[^"]*"$');
+  static final _symbol = new RegExp(r"^([{}()\[\].,;+\-*/&|<>=~])$");
+  static final _integerConstant = new RegExp(
+      r'^([1-2]?[0-9]?[0-9]?[0-9]?[0-9]|3[0-1][0-9]{3}|32[0-6][0-9]{2}|327[0-5][0-9]|3276[0-7])$');
+  static final _stringConstant = new RegExp(r'^"[^"]*"$');
+  static final _identifier = new RegExp(r'^([a-z]|[A-Z]|_)(^\s|\w)*$');
 
-  States state;
-  final String inputFileText;
-  int nextIndex = 0;
+  static final _regExMap = {
+    'symbol': _symbol,
+    'keyword': _keyword,
+    'integerConstant': _integerConstant,
+    'stringConstant': _stringConstant,
+    'identifier': _identifier
+  };
+
+  String buffer;
+  String inputFileText;
   List<Token> outputTokenList;
 
-  Tokenizer(this.inputFileText);
-
-  String _next(){
-    return inputFileText[nextIndex++];
+  Tokenizer(String _inputFileText) {
+    inputFileText = _inputFileText.replaceAll(_commentLine, '');
+    inputFileText = inputFileText.replaceAll(_commentMultyLint, '');
   }
 
-  void ExportFileToXML(List<Token> tokenStream,String JackFileName)
-  {
-    String startTok="<token>\n";
-    String resultedXML="";
-    String EndTok="</token>";
-
-    String startTokVal;
-    String tokenValue;
-    String EndTokVal;
-    for (int i=0;i<tokenStream.length;i++)
-    {
-      TokenType tokenType=tokenStream[i].type;
-      switch (tokenType.toString())
-      {
-        case 'keyword':
-          startTokVal="<keyword>";
-          tokenValue=tokenStream[i].value;
-          EndTokVal="</keyword>\n";
-          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
-          break;
-        case 'symbol':
-          startTokVal="<symbol>";
-          tokenValue=tokenStream[i].value;
-          EndTokVal="</symbol>\n";
-          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
-          break;
-        case 'integerConstant':
-          startTokVal="<integerConstant>";
-          tokenValue=tokenStream[i].value;
-          EndTokVal="</integerConstant>\n";
-          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
-          break;
-        case 'stringConstant':
-          startTokVal="<stringConstant>";
-          tokenValue=tokenStream[i].value;
-          EndTokVal="</stringConstant>\n";
-          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
-          break;
-        case 'identifier':
-          startTokVal="<identifier>";
-          tokenValue=tokenStream[i].value;
-          EndTokVal="</identifier>\n";
-          resultedXML = resultedXML + startTokVal + tokenValue + EndTokVal;
-          break;
-      }
+  generateTokens() {
+    buffer = '';
+    outputTokenList = List<Token>();
+    while (inputFileText.length > 0) {
+      buffer += inputFileText[0];
+      inputFileText = inputFileText.substring(1);
+      _regExMap.forEach((key, val) => {
+            if (val.hasMatch(buffer)) {checkAndGenerateToken(key)}
+          });
     }
-    resultedXML = startTok + resultedXML +"\n"+ EndTok;
-/////////////////////to verify input as XML//////////////////
-    try {
-      //var document = xml.parse(bookshelfXml);
+  }
+
+  checkAndGenerateToken(String key) {
+    if (inputFileText.length > 0 &&
+        _regExMap[key].hasMatch(buffer + inputFileText[0])) return;
+    outputTokenList.add(Token(
+        TokenType.values.firstWhere((type) => getTokenString(type) == key),
+        buffer));
+    buffer = '';
+    while (inputFileText.length > 0 &&
+        (inputFileText[0] == ' ' ||
+            inputFileText[0] == '\t' ||
+            inputFileText[0] == '\n')) {
+      inputFileText = inputFileText.substring(1);
     }
-    on Exception catch(e) {}
-
-////////////////////create text file and write xml//////////////////
-    //var XmlFile = new File(JackFileName + 'T.XML').openWrite();
-    //XmlFile.write(resultedXML);
   }
 
+  void exportFileToXML(List<Token> tokenStream, String JackFileName) {
+    String resultedXML = '<tokens>\n';
 
+    for (var token in tokenStream) {
+      var tokenType = getTokenString(token.type);
+      resultedXML += '\t<$tokenType>${token.value}</$tokenType>\n';
+    }
+    resultedXML += '</tokens>';
 
-  initialState () {
-    for()
+    // create text file and write xml
+    var XmlFile = new File(JackFileName + 'T.xml').openWrite();
+    XmlFile.write(resultedXML);
   }
+}
 
+main() {
+  var tokenizer = new Tokenizer('var int a;\n'
+    'var String b;\n'
+    'let a = 9;\n'
+    'let b = "hello world"\n'
+    '//this is comment\n'
+    '/*try\n'
+    'multi\n'
+    'line\n'
+    'comment\n*/\n'
+    'do func(a);');
+
+  print('generate tokens...');
+  tokenizer.generateTokens();
+  print('export to xml file...');
+  tokenizer.exportFileToXML(tokenizer.outputTokenList, 'test');
 }
