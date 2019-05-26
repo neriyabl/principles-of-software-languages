@@ -21,7 +21,7 @@ enum Grammar {
   ifStatement,
   whileStatement,
   doStatement,
-  ReturnStatement,
+  returnStatement,
   expression,
   term,
   subroutineCall,

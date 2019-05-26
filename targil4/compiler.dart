@@ -23,8 +23,8 @@ class Compiler {
     }
     // subroutineDec*
     while (
-        ['constractor', 'function', 'method'].contains(tokenList.first.value)) {
-      root.sons.add(_subroutineDecs(root));
+        ['constructor', 'function', 'method'].contains(tokenList.first.value)) {
+      root.sons.add(_subroutineDec(root));
     }
     // }
     root.sons
@@ -68,7 +68,7 @@ class Compiler {
     return TokenNode(grammar, father, token: tokenList.removeAt(0));
   }
 
-  _subroutineDecs(TokenNode father) {
+  _subroutineDec(TokenNode father) {
     // subroutineDec
     var tokenNode = TokenNode(Grammar.subroutineDec, father);
     tokenNode.sons = [
@@ -80,8 +80,8 @@ class Compiler {
       TokenNode(Grammar.identifier, tokenNode, token: tokenList.removeAt(0)),
       // (
       TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0)),
-      // paramList
-      _paramList(tokenNode),
+      // parameterList
+      _parameterList(tokenNode),
       // )
       TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0)),
       // subroutineBody
@@ -90,17 +90,25 @@ class Compiler {
     return tokenNode;
   }
 
-  _paramList(TokenNode father) {
+  _parameterList(TokenNode father) {
     // parameterList
     TokenNode tokenNode = TokenNode(Grammar.parameterList, father);
+    // ( (type varName) (',' type varName)*) ?
     if (tokenList.first.value == ')') return tokenNode;
     tokenNode.sons = [
+      // type
       _type(tokenNode),
+      // varName
       TokenNode(Grammar.identifier, tokenNode, token: tokenList.removeAt(0))
     ];
+    // (',' type varName)*
     while (tokenList.first.value == ',') {
       tokenNode.sons.addAll([
+        // ,
+        TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0)),
+        // type
         _type(tokenNode),
+        // varName
         TokenNode(Grammar.identifier, tokenNode, token: tokenList.removeAt(0))
       ]);
     }
@@ -147,7 +155,8 @@ class Compiler {
       ]);
     }
     // ;
-    TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0));
+    tokenNode.sons.add(
+        TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0)));
     return tokenNode;
   }
 
@@ -204,6 +213,7 @@ class Compiler {
       // ;
       TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0))
     ]);
+    return tokenNode;
   }
 
   _ifStatement(TokenNode father) {
@@ -259,6 +269,7 @@ class Compiler {
       // }
       TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0))
     ];
+    return tokenNode;
   }
 
   _doStatement(TokenNode father) {
@@ -275,7 +286,7 @@ class Compiler {
   }
 
   _returnStatement(TokenNode father) {
-    var tokenNode = TokenNode(Grammar.ReturnStatement, father);
+    var tokenNode = TokenNode(Grammar.returnStatement, father);
     tokenNode.sons = [
       // return
       TokenNode(Grammar.keyword, tokenNode, token: tokenList.removeAt(0))
@@ -295,7 +306,7 @@ class Compiler {
       // term
       _term(tokenNode)
     ];
-    while (['+', '-', '*', '/', '&amp;', ',', '&lt;', '&gt;', '=']
+    while (['+', '-', '*', '/', '&amp;', '&lt;', '&gt;', '=']
         .contains(tokenList.first.value)) {
       tokenNode.sons.addAll([
         // op
@@ -404,23 +415,30 @@ class Compiler {
         ]);
       }
     }
+    return tokenNode;
   }
 
   printNode(TokenNode t, r) {
     if (t == null) return;
-    var grammar = t.grammar.toString().substring(t.grammar.toString().indexOf
-      ('.')+1);
-    if(grammar == r'$class') grammar = 'class';
+    var grammar =
+        t.grammar.toString().substring(t.grammar.toString().indexOf('.') + 1);
+    if (grammar == r'$class') grammar = 'class';
     if (t.token != null) {
       print('$r<$grammar> ${t.token.value} </$grammar>');
     } else if (t.sons != null) {
-      print('$r<$grammar>');
+      if (grammar != 'subroutineCall') print('$r<$grammar>');
       for (var node in t.sons) {
-        printNode(node, r + '  ');
+        if (grammar != 'subroutineCall')
+          printNode(node, r + '  ');
+        else
+          printNode(node, r);
       }
-      print('$r</$grammar>');
+      if (grammar != 'subroutineCall') print('$r</$grammar>');
+    } else {
+      if (grammar != 'subroutineCall') print('$r<$grammar>\n$r</$grammar>');
     }
     return;
   }
-}
 
+  
+}
