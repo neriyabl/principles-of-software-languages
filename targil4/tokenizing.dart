@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'Entities.dart';
+import 'compiler.dart';
 
 class Tokenizer {
   static final _commentLine = new RegExp(r'//[^\n]*');
-  static final _commentMultyLint = new RegExp(r'/\*[\s\S]*\*/');
+  static final _commentMultyLint = new RegExp(r'/\*((?!\*/)[\s\S])*\*/');
   static final _keyword = new RegExp(
       r'^(class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)$');
   static final _symbol = new RegExp(r"^([{}()\[\].,;+\-*/&|<>=~])$");
@@ -27,7 +28,6 @@ class Tokenizer {
   Tokenizer(String _inputFileText) {
     inputFileText = _inputFileText.replaceAll(_commentLine, '');
     inputFileText = inputFileText.replaceAll(_commentMultyLint, '');
-    print(inputFileText);
   }
 
   generateTokens() {
@@ -47,7 +47,8 @@ class Tokenizer {
     while (inputFileText.length > 0 &&
         (inputFileText[0] == ' ' ||
             inputFileText[0] == '\t' ||
-            inputFileText[0] == '\n')) {
+            inputFileText[0] == '\n' ||
+            inputFileText[0] == '\r')) {
       inputFileText = inputFileText.substring(1);
     }
   }
@@ -60,7 +61,7 @@ class Tokenizer {
     if (key == 'symbol' && symbolMap.keys.contains(buffer)) {
       buffer = symbolMap[buffer];
     }
-    if(key == 'stringConstant'){
+    if (key == 'stringConstant') {
       buffer = buffer.replaceAll('"', '');
     }
 
@@ -90,39 +91,16 @@ class Tokenizer {
 }
 
 main() {
-  var tokenizer = new Tokenizer('// This file is part of the materials '
-      'accompanying the book\n'
-      '// "The Elements of Computing Systems" by Nisan and Schocken, \n'
-      '// MIT Press. Book site: www.idc.ac.il/tecs\n'
-      '// File name: projects/10/ArrayTest/Main.jack\n'
-      '/** Computes the average of a sequence of integers. */\n'
-      'class Main {\n'
-      'function void main() {\n'
-      'var Array a;\n'
-      'var int length;\n'
-      'var int i, sum;\n'
-      'let length = Keyboard.readInt("HOW MANY NUMBERS? ");\n'
-      'let a = Array.new(length);\n'
-      'let i = 0;\n'
-      'while (i < length) {\n'
-      'let a[i] = Keyboard.readInt("ENTER THE NEXT NUMBER: ");\n'
-      'let i = i + 1;\n'
-      '}\n'
-      'let i = 0;\n'
-      'let sum = 0;\n'
-      'while (i < length) {\n'
-      'let sum = sum + a[i];\n'
-      'let i = i + 1;\n'
-      '}\n'
-      'do Output.printString("THE AVERAGE IS: ");\n'
-      'do Output.printInt(sum / length);\n'
-      'do Output.println();\n'
-      'return;\n'
-      '}\n'
-      '}\n');
-
+  print('enter file path');
+  var path = stdin.readLineSync();
+  var jackCode = File(path).readAsStringSync();
+  var tokenizer = Tokenizer(jackCode);
   print('generate tokens...');
   tokenizer.generateTokens();
   print('export to xml file...');
-  tokenizer.exportFileToXML('test');
+  tokenizer.exportFileToXML(path);
+  print('compile...');
+  var compiler = Compiler(tokenizer.outputTokenList);
+  compiler.parse();
+  compiler.printNode(compiler.root, '');
 }
