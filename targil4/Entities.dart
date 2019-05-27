@@ -12,9 +12,6 @@ enum Grammar {
   parameterList,
   subroutineBody,
   varDec,
-  className,
-  subroutineName,
-  varName,
   statements,
   statement,
   letStatement,
@@ -25,10 +22,7 @@ enum Grammar {
   expression,
   term,
   subroutineCall,
-  expressionList,
-  op,
-  unaryOp,
-  KeywordConstant
+  expressionList
 }
 
 String getTokenString(TokenType type) {
