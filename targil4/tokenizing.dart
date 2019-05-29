@@ -90,18 +90,3 @@ class Tokenizer {
     XmlFile.write(resultedXML);
   }
 }
-
-main() {
-  print('enter file path');
-  var path = stdin.readLineSync();
-  var jackCode = File(path).readAsStringSync();
-  var tokenizer = Tokenizer(jackCode);
-  print('generate tokens...');
-  tokenizer.generateTokens();
-  print('export to xml file...');
-  tokenizer.exportFileToXML(path);
-  print('compile...');
-  var compiler = Compiler(tokenizer.outputTokenList);
-  compiler.parse();
-  compiler.printNode(compiler.root, '');
-}
