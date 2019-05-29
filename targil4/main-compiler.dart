@@ -15,19 +15,19 @@ main() {
   directory.list(recursive: true).forEach((FileSystemEntity entity) {
     if (entity.path.endsWith('.jack')) {
       var filePath = entity.path.substring(0, entity.path.length - 5);
-
-      var jackCode = File(filePath).readAsStringSync();
+      var fileName = filePath.substring(filePath.lastIndexOf('\\')+1);
+      var jackCode = File(entity.path).readAsStringSync();
       var tokenizer = Tokenizer(jackCode);
-      print('$filePath generate tokens...');
+      print('$fileName generate tokens...');
       tokenizer.generateTokens();
-      print('$filePath export to xml file \'${filePath}T.xml\'...');
+      print('$fileName export to xml file \'${filePath}T.xml\'...');
       tokenizer.exportFileToXML(filePath);
-      print('$filePath compile...');
+      print('$fileName compile...');
       var compiler = Compiler(tokenizer.outputTokenList);
       compiler.parse();
-      print('$filePath exporte to xml file \'${filePath}.xml\'...');
+      print('$fileName exporte to xml file \'${filePath}.xml\'...');
       compiler.exportToXml(filePath);
-      print('$filePath .... FINISH ....');
+      print('$fileName .... FINISH ....');
     }
   });
 }
