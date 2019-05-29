@@ -41,4 +41,12 @@ class Compiler {
     }
     return;
   }
+
+  exportToXml(String JackFileName, {TokenNode tokenRootNode = null}){
+    if(tokenRootNode == null){
+      tokenRootNode = root;
+    }
+
+
+  }
 }
