@@ -25,24 +25,26 @@ class Compiler {
     _programStructure.$class(root);
   }
 
-  printNode(TokenNode t, r) {
-    if (t == null) return;
+  getXmlTextNode(TokenNode t, r) {
+    if (t == null) return '';
     var grammar =
         t.grammar.toString().substring(t.grammar.toString().indexOf('.') + 1);
     if (grammar == r'$class') grammar = 'class';
 
+    var xmlText = '';
+
     if (t.token != null) {
-      print('$r<$grammar> ${t.token.value} </$grammar>');
+      xmlText += '$r<$grammar> ${t.token.value} </$grammar>';
     } else if (t.sons != null) {
-      print('$r<$grammar>');
+      xmlText += '$r<$grammar>\n';
       for (var node in t.sons) {
-        printNode(node, r + '  ');
+        xmlText += getXmlTextNode(node, r + '  ')+'\n';
       }
-      print('$r</$grammar>');
+      xmlText += '$r</$grammar>';
     } else {
-      print('$r<$grammar>\n$r</$grammar>');
+      xmlText += '$r<$grammar>\n$r</$grammar>';
     }
-    return;
+    return xmlText;
   }
 
   exportToXml(String jackFileName, {TokenNode tokenRootNode = null}) {
@@ -50,9 +52,11 @@ class Compiler {
       tokenRootNode = root;
     }
     var xmlObject = getXml(tokenRootNode);
+    var xmlText = getXmlTextNode(tokenRootNode, '');
 
     var xmlFile = File(jackFileName+'.xml');
-    xmlFile.writeAsString(xmlObject.toXmlString(pretty: true));
+    // xmlFile.writeAsString(xmlObject.toXmlString(pretty: true));
+    xmlFile.writeAsString(xmlText);
   }
 
   XmlElement getXml(TokenNode tokenNode) {

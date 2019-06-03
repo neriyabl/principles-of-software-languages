@@ -81,9 +81,9 @@ class Tokenizer {
 
     for (var token in tokenStream) {
       var tokenType = getTokenString(token.type);
-      resultedXML += '\t<$tokenType> ${token.value} </$tokenType>\n';
+      resultedXML += '<$tokenType> ${token.value} </$tokenType>\n';
     }
-    resultedXML += '</tokens>';
+    resultedXML += '</tokens>\n';
 
     // create text file and write xml
     var XmlFile = new File(JackFileName + 'T.xml').openWrite();

@@ -11,7 +11,7 @@ class Expressions {
       // term
       _term(tokenNode)
     ];
-    while (['+', '-', '*', '/', '&amp;', '&lt;', '&gt;', '=']
+    while (['+', '-', '*', '/', '|', '&amp;', '&lt;', '&gt;', '=']
       .contains(tokenList.first.value)) {
       tokenNode.sons.addAll([
         // op
@@ -43,7 +43,7 @@ class Expressions {
     } else if (['-', '~'].contains(tokenList.first.value)) {
       tokenNode.sons = [
         // unaryOp
-        TokenNode(Grammar.keyword, tokenNode, token: tokenList.removeAt(0)),
+        TokenNode(Grammar.symbol, tokenNode, token: tokenList.removeAt(0)),
         // term
         _term(tokenNode)
       ];
