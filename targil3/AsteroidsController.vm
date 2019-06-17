@@ -46,6 +46,8 @@ label IF_FALSE1
 push this 2
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 4
 push local 4
 push constant 0
@@ -115,6 +117,8 @@ if-goto WHILE_END4
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 not
@@ -124,6 +128,8 @@ label IF_TRUE5
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 1
 push local 1
 call Asteroid.move 1
@@ -166,6 +172,8 @@ if-goto WHILE_END7
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 not
@@ -175,6 +183,8 @@ label IF_TRUE8
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 1
 push local 1
 push argument 1
@@ -219,6 +229,8 @@ if-goto WHILE_END10
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 not
@@ -228,6 +240,8 @@ label IF_TRUE11
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 1
 push local 1
 call Asteroid.dispose 1

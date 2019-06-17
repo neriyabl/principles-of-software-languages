@@ -207,7 +207,9 @@ class Compiler {
                   : classSymbolTable.findByName(name);
               vmCode += _generateCodeNode(tokenNode.sons[2], subroutineSymbolTable: subroutineSymbolTable);
               vmCode += 'push ${varName.segment} ${varName.offset}\n'
-                  'add\n';
+                  'add\n'
+                  'pop pointer 1\n'
+                  'push that 0\n';
             }
             // subroutineCall
             else {
@@ -304,7 +306,6 @@ class Compiler {
     var file = File(filePath);
     await file.writeAsString(vmCode);
   }
-
 }
 
 main() {
@@ -318,7 +319,7 @@ main() {
   directory.list(recursive: true).forEach((FileSystemEntity entity) {
     if (entity.path.endsWith('.jack')) {
       var filePath = entity.path.substring(0, entity.path.length - 5);
-      var fileName = filePath.substring(filePath.lastIndexOf('\\')+1);
+      var fileName = filePath.substring(filePath.lastIndexOf('\\') + 1);
       var jackCode = File(entity.path).readAsStringSync();
       var tokenizer = Tokenizer(jackCode);
       print('$fileName generate tokens...');

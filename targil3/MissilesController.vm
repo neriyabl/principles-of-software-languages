@@ -58,6 +58,8 @@ label IF_FALSE1
 push local 2
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 not
@@ -67,6 +69,8 @@ label IF_TRUE2
 push local 2
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 0
 push local 0
 call Missile.y 1
@@ -84,6 +88,8 @@ label IF_FALSE2
 push this 2
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 not
@@ -93,6 +99,8 @@ label IF_TRUE4
 push this 2
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 0
 push local 0
 call Missile.dispose 1
@@ -134,6 +142,8 @@ if-goto WHILE_END6
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 not
@@ -143,6 +153,8 @@ label IF_TRUE7
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 1
 push local 1
 call Missile.move 1
@@ -181,6 +193,8 @@ pop pointer 0
 push argument 1
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 if-goto IF_TRUE9
@@ -192,6 +206,8 @@ label IF_FALSE9
 push argument 1
 push this 0
 add
+pop pointer 1
+push that 0
 return
 function MissilesController.remove 1
 push argument 0
@@ -199,6 +215,8 @@ pop pointer 0
 push argument 1
 push this 0
 add
+pop pointer 1
+push that 0
 pop local 0
 push local 0
 call Missile.dispose 1
@@ -225,6 +243,8 @@ if-goto WHILE_END10
 push local 0
 push this 0
 add
+pop pointer 1
+push that 0
 push constant 0
 eq
 not
