@@ -1,7 +1,7 @@
 function Random.seed 0
 push argument 0
 pop static 0
-push constant 0
+push pointer 0
 return
 function Random.mod 3
 push argument 0

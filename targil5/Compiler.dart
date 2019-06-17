@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import '../targil4/Entities.dart';
+import '../targil4/Parser.dart';
+import '../targil4/tokenizing.dart';
 import 'SymbolTable.dart';
 
 class Compiler {
@@ -6,6 +10,7 @@ class Compiler {
   final SymbolTable classSymbolTable = SymbolTable();
   var labelsCounter = 0;
   var className;
+  var vmCode;
 
   Compiler(this.root);
 
@@ -32,18 +37,19 @@ class Compiler {
 
   generateCode() {
     className = root.sons[1].token.value;
-    return _generateCodeNode(root);
+    this.vmCode = _generateCodeNode(root);
+    return vmCode;
   }
 
   _generateCodeNode(TokenNode tokenNode, {SymbolTable subroutineSymbolTable = null}) {
     var vmCode = '';
     switch (tokenNode.grammar) {
       case Grammar.classVarDec:
-        insertClassVar(tokenNode);
+        _insertClassVar(tokenNode);
         break;
       case Grammar.subroutineDec:
         var name = tokenNode.sons[2].token.value;
-        var numLocals = getLocalLength(tokenNode.sons[6]);
+        var numLocals = _getLocalLength(tokenNode.sons[6]);
         var numFields = classSymbolTable.table.where((entry) => entry.segment == 'this').length;
         var withThis = false;
         vmCode = 'function $className.$name $numLocals\n';
@@ -55,10 +61,9 @@ class Compiler {
           vmCode += 'push constant $numFields\n'
               'call Memory.alloc 1\n'
               'pop pointer 0\n';
-          withThis = true;
         }
         vmCode +=
-            _generateCodeNode(tokenNode.sons[6], subroutineSymbolTable: getParamsTable(tokenNode.sons[4], withThis));
+            _generateCodeNode(tokenNode.sons[6], subroutineSymbolTable: _getParamsTable(tokenNode.sons[4], withThis));
         break;
       case Grammar.integerConstant:
         vmCode = 'push constant ${tokenNode.token.value}\n';
@@ -77,7 +82,7 @@ class Compiler {
         // insert all vars in the func body to the table
         tokenNode.sons
             .where((son) => son.grammar == Grammar.varDec)
-            .forEach((varDec) => {insertSubroutineVar(varDec, subroutineSymbolTable)});
+            .forEach((varDec) => {_insertSubroutineVar(varDec, subroutineSymbolTable)});
         vmCode = _generateCodeNode(tokenNode.sons.firstWhere((son) => son.grammar == Grammar.statements),
             subroutineSymbolTable: subroutineSymbolTable);
         break;
@@ -131,7 +136,7 @@ class Compiler {
         break;
       case Grammar.doStatement:
         tokenNode.sons.removeAt(0);
-        vmCode += subroutineCallCode(tokenNode, subroutineSymbolTable);
+        vmCode += _subroutineCallCode(tokenNode, subroutineSymbolTable);
         vmCode += 'pop temp 0\n';
         break;
       case Grammar.returnStatement:
@@ -206,7 +211,7 @@ class Compiler {
             }
             // subroutineCall
             else {
-              vmCode += subroutineCallCode(tokenNode, subroutineSymbolTable);
+              vmCode += _subroutineCallCode(tokenNode, subroutineSymbolTable);
             }
             break;
         }
@@ -225,7 +230,7 @@ class Compiler {
     return vmCode;
   }
 
-  insertClassVar(TokenNode classVarDekNode) {
+  _insertClassVar(TokenNode classVarDekNode) {
     var segment = classVarDekNode.sons[0].token.value;
     if (segment == 'field') {
       segment = 'this';
@@ -236,18 +241,14 @@ class Compiler {
         });
   }
 
-  getParamsLength(TokenNode parameterList) {
-    return ((parameterList.sons.length + 1) / 3).floor();
-  }
-
-  getLocalLength(TokenNode subroutineBody) {
+  _getLocalLength(TokenNode subroutineBody) {
     return subroutineBody.sons
         .where((son) => son.grammar == Grammar.varDec)
         .map((varDec) => (varDec.sons.length - 2) / 2)
         .fold<int>(0, (acc, item) => acc + item.floor());
   }
 
-  getParamsTable(TokenNode parameterList, bool withThis) {
+  _getParamsTable(TokenNode parameterList, bool withThis) {
     SymbolTable table = SymbolTable();
     if (parameterList.sons == null) {
       return table;
@@ -261,7 +262,7 @@ class Compiler {
     return table;
   }
 
-  void insertSubroutineVar(TokenNode tokenNode, SymbolTable subroutineSymbolTable) {
+  void _insertSubroutineVar(TokenNode tokenNode, SymbolTable subroutineSymbolTable) {
     var type = tokenNode.sons[1].token.value;
     tokenNode.sons.sublist(2).forEach((token) => {
           if (token.token.type == TokenType.identifier) {subroutineSymbolTable.add(token.token.value, type, 'local')}
@@ -269,7 +270,7 @@ class Compiler {
   }
 
   // generate subroutine call
-  String subroutineCallCode(TokenNode tokenNode, SymbolTable subroutineSymbolTable) {
+  String _subroutineCallCode(TokenNode tokenNode, SymbolTable subroutineSymbolTable) {
     var vmCode = '';
     // expressionList node
     var expList = tokenNode.sons.firstWhere((son) => son.grammar == Grammar.expressionList);
@@ -298,4 +299,39 @@ class Compiler {
     }
     return vmCode;
   }
+
+  Future exportVmCode(String filePath) async {
+    var file = File(filePath);
+    await file.writeAsString(vmCode);
+  }
+
+}
+
+main() {
+  print('Enter folder path');
+  var directoryPath = stdin.readLineSync();
+  var directory = new Directory(directoryPath);
+  if (!directory.existsSync()) {
+    print('this directory not found');
+    return;
+  }
+  directory.list(recursive: true).forEach((FileSystemEntity entity) {
+    if (entity.path.endsWith('.jack')) {
+      var filePath = entity.path.substring(0, entity.path.length - 5);
+      var fileName = filePath.substring(filePath.lastIndexOf('\\')+1);
+      var jackCode = File(entity.path).readAsStringSync();
+      var tokenizer = Tokenizer(jackCode);
+      print('$fileName generate tokens...');
+      tokenizer.generateTokens();
+      print('$fileName parsing...');
+      var parser = Parser(tokenizer.outputTokenList);
+      parser.parse();
+      print('$fileName compiling...');
+      var compiler = Compiler(parser.root);
+      compiler.generateCode();
+      print('export $fileName.vm file...');
+      compiler.exportVmCode('$filePath.vm').then((onValue) => print('$fileName.vm exported...'));
+      // print('$fileName .... FINISH ....');
+    }
+  });
 }

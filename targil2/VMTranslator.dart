@@ -94,10 +94,11 @@ class VMTranslator {
       return;
     }
     var bootstrap = '';
+    var dirName = directoryPath.substring(directoryPath.lastIndexOf('\\')+1);
     await directory.list(recursive: true).forEach((FileSystemEntity entity) {
       if (entity.path.endsWith('.vm')) {
-        var fileName = entity.path
-            .substring(entity.path.indexOf('\\') + 1, entity.path.length - 3)
+        var fileName = entity.path.replaceFirst(directoryPath, dirName)
+            .substring(0,entity.path.replaceFirst(directoryPath, dirName).length -3)
             .replaceAll('\\', '.');
         var translator = new _VMTranslatorFile(fileName);
         List<String> lines = (entity as File).readAsLinesSync();
@@ -113,7 +114,7 @@ class VMTranslator {
 }
 
 main() async {
-  print("enter the directory name");
+  print("enter the directory path");
   var path = stdin.readLineSync();
   VMTranslator vmTranslator = new VMTranslator();
   await vmTranslator.translate(path);

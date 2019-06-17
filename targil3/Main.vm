@@ -2,7 +2,7 @@ function Main.main 2
 push constant 11
 call Random.seed 1
 pop temp 0
-label WHILE_EXP0
+label START_WHILE0
 push local 0
 not
 not
@@ -21,7 +21,7 @@ call GameController.dispose 1
 pop temp 0
 call Main.printGameOver 0
 pop temp 0
-label WHILE_EXP1
+label START_WHILE1
 push local 1
 push constant 32
 eq
@@ -38,18 +38,18 @@ pop local 1
 push local 1
 push constant 140
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
 push constant 0
 not
 pop local 0
-label IF_FALSE0
-goto WHILE_EXP1
+label IF_FALSE2
+goto START_WHILE1
 label WHILE_END1
-goto WHILE_EXP0
+goto START_WHILE0
 label WHILE_END0
-push constant 0
+push pointer 0
 return
 function Main.resetScrean 0
 push constant 0
@@ -201,7 +201,7 @@ push constant 10
 push constant 215
 call Screen.drawPixel 2
 pop temp 0
-push constant 0
+push pointer 0
 return
 function Main.printGameOver 0
 push constant 7
@@ -405,5 +405,5 @@ push constant 116
 call String.appendChar 2
 call Output.printString 1
 pop temp 0
-push constant 0
+push pointer 0
 return

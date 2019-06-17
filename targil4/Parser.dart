@@ -6,14 +6,14 @@ import 'program-structure.dart';
 import 'statements.dart';
 import 'package:xml/xml.dart';
 
-class Compiler {
+class Parser {
   final List<Token> tokenList;
   ProgramStructure _programStructure;
   Statements _statements;
   Expressions _expressions;
   TokenNode root;
 
-  Compiler(this.tokenList) {
+  Parser(this.tokenList) {
     _programStructure = new ProgramStructure(tokenList);
     _statements = new Statements(tokenList);
     _expressions = new Expressions(tokenList);

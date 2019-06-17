@@ -23,7 +23,7 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 0
-label WHILE_EXP0
+label START_WHILE0
 push local 0
 not
 not
@@ -35,34 +35,34 @@ pop local 1
 call Keyboard.keyPressed 0
 push constant 130
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push this 0
-call SpaceShip.moveLeft 1
-pop temp 0
-label IF_FALSE0
-call Keyboard.keyPressed 0
-push constant 132
-eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push this 0
-call SpaceShip.moveRight 1
+call SpaceShip.moveLeft 1
 pop temp 0
 label IF_FALSE1
 call Keyboard.keyPressed 0
-push constant 32
+push constant 132
 eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
+push this 0
+call SpaceShip.moveRight 1
+pop temp 0
+label IF_FALSE2
+call Keyboard.keyPressed 0
+push constant 32
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
 push this 2
 push this 0
 call MissilesController.shoot 2
 pop temp 0
-label IF_FALSE2
+label IF_FALSE3
 push this 1
 push local 1
 call AsteroidsController.newAsteroid 2
@@ -78,13 +78,13 @@ call GameController.checkMissilesHit 1
 pop temp 0
 push pointer 0
 call GameController.checkSpaceShipHit 1
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
 push constant 0
 not
 pop local 0
-label IF_FALSE3
+label IF_FALSE4
 push this 3
 push constant 1
 add
@@ -92,16 +92,16 @@ pop this 3
 push this 3
 push constant 500
 eq
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
 push pointer 0
 call GameController.printStar 1
 pop temp 0
 push constant 0
 pop this 3
-label IF_FALSE4
-goto WHILE_EXP0
+label IF_FALSE5
+goto START_WHILE0
 label WHILE_END0
 push this 4
 return
@@ -123,29 +123,29 @@ push local 0
 push local 1
 call Screen.drawPixel 2
 pop temp 0
-push constant 0
+push pointer 0
 return
 function GameController.checkMissilesHit 2
 push argument 0
 pop pointer 0
 push constant 0
 pop local 0
-label WHILE_EXP0
+label START_WHILE6
 push local 0
 push this 2
 call MissilesController.length 1
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_END6
 push this 2
 push local 0
 call MissilesController.at 2
 push constant 0
 eq
 not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
 push this 2
 push local 0
 call MissilesController.at 2
@@ -156,9 +156,9 @@ call Missile.x 1
 push local 1
 call Missile.y 1
 call AsteroidsController.hit 3
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
 push this 2
 push local 0
 call MissilesController.remove 2
@@ -169,15 +169,15 @@ push constant 15
 call Random.between 2
 call GameController.updateScore 2
 pop temp 0
-label IF_FALSE1
-label IF_FALSE0
+label IF_FALSE8
+label IF_FALSE7
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
-push constant 0
+goto START_WHILE6
+label WHILE_END6
+push pointer 0
 return
 function GameController.checkSpaceShipHit 0
 push argument 0
@@ -221,7 +221,7 @@ pop temp 0
 push this 4
 call Output.printInt 1
 pop temp 0
-push constant 0
+push pointer 0
 return
 function GameController.dispose 0
 push argument 0
@@ -238,5 +238,5 @@ pop temp 0
 push pointer 0
 call Memory.deAlloc 1
 pop temp 0
-push constant 0
+push pointer 0
 return

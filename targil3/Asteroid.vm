@@ -56,7 +56,7 @@ add
 push this 9
 call Screen.drawCircle 3
 pop temp 0
-push constant 0
+push pointer 0
 return
 function Asteroid.erase 0
 push argument 0
@@ -79,7 +79,7 @@ add
 push this 9
 call Screen.drawCircle 3
 pop temp 0
-push constant 0
+push pointer 0
 return
 function Asteroid.move 0
 push argument 0
@@ -113,14 +113,14 @@ pop temp 0
 label IF_FALSE1
 push constant 0
 pop this 1
-goto IF_END0
+goto IF_End0
 label IF_FALSE0
 push this 1
 push constant 1
 add
 pop this 1
-label IF_END0
-push constant 0
+label IF_End0
+push pointer 0
 return
 function Asteroid.end 0
 push argument 0
@@ -175,12 +175,12 @@ push local 2
 or
 push constant 80
 gt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
 push constant 0
 return
-label IF_FALSE0
+label IF_FALSE2
 push local 1
 push local 1
 call Math.multiply 2
@@ -204,12 +204,12 @@ push local 0
 or
 push constant 0
 lt
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
 push constant 0
 return
-label IF_FALSE1
+label IF_FALSE3
 push local 0
 push this 4
 push this 4
@@ -225,5 +225,5 @@ pop temp 0
 push pointer 0
 call Memory.deAlloc 1
 pop temp 0
-push constant 0
+push pointer 0
 return

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'Entities.dart';
-import 'compiler.dart';
+import 'Parser.dart';
 
 class Tokenizer {
   static final _commentLine = new RegExp(r'//[^\n]*');

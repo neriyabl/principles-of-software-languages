@@ -1,7 +1,7 @@
 
 import 'dart:io';
 
-import 'compiler.dart';
+import 'Parser.dart';
 import 'tokenizing.dart';
 
 main() {
@@ -23,7 +23,7 @@ main() {
       print('$fileName export to xml file \'${filePath}T.xml\'...');
       tokenizer.exportFileToXML(filePath);
       print('$fileName compile...');
-      var compiler = Compiler(tokenizer.outputTokenList);
+      var compiler = Parser(tokenizer.outputTokenList);
       compiler.parse();
       print('$fileName exporte to xml file \'${filePath}.xml\'...');
       compiler.exportToXml(filePath);
