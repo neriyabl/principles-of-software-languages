@@ -1,3 +1,7 @@
+/**
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
+ */
 class SymbolEntry {
   final String name;
   final String type;

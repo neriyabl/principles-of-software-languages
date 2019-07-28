@@ -48,12 +48,16 @@ class GameController {
             }
             // create new asteroid (if randNum > 990)
             do asteroids.newAsteroid(randomNum);
+
             //move all the asteroids
             do asteroids.moveAsteroids();
+
             //move all the missiles
             do missiles.moveMissiles();
+
             // check if some missile hit some asteroid
             do checkMissilesHit();
+
             // check if some asteroid hit the space ship if true its game over
             if (checkSpaceShipHit()){
                 let gameOver = true;

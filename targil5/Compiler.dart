@@ -1,3 +1,8 @@
+/**
+  Neriya Bar-lev  313366676
+  Netanel Avraham 207544131
+ */
+
 import 'dart:io';
 
 import '../targil4/Entities.dart';
@@ -44,6 +49,15 @@ class Compiler {
   _generateCodeNode(TokenNode tokenNode, {SymbolTable subroutineSymbolTable = null}) {
     var vmCode = '';
     switch (tokenNode.grammar) {
+
+      // root code
+      case Grammar.$class:
+        for (var node in tokenNode.sons) {
+          vmCode += _generateCodeNode(node);
+        }
+        break;
+
+      // insert the class variables (fields and static) to a symbol table
       case Grammar.classVarDec:
         _insertClassVar(tokenNode);
         break;
@@ -72,11 +86,6 @@ class Compiler {
         vmCode = 'push constant ${tokenNode.token.value.length}'
             'call String.new 1\n';
         tokenNode.token.value.split('').forEach((char) => {vmCode += char.codeUnitAt(0).toString()});
-        break;
-      case Grammar.$class:
-        for (var node in tokenNode.sons) {
-          vmCode += _generateCodeNode(node);
-        }
         break;
       case Grammar.subroutineBody:
         // insert all vars in the func body to the table
