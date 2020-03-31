@@ -1,27 +1,3 @@
-/**
-Math.abs
-Math.multiply
-Math.divide
-Math.min
-Math.max
-Math.sqrt
-
-String.new
-String.dispose
-String.length
-String.charAt
-String.setCharAt
-String.appendChar
-String.eraseLastChar
-String.intValue
-String.setInt
-String.backSpace
-String.doubleQuote
-/**
-  Neriya Bar-lev  313366676
-  Netanel Avraham 207544131
-*/
-
 class SpaceShip{
     // -------- fields --------
     field int x, y;
