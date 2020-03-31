@@ -1,8 +1,3 @@
-/*
-  Netanel Avraham 207544131
-  Neriya Bar-lev  313366676
- */
-
 import 'dart:io';
 import 'dart:convert';
 import 'arithmetic-parser.dart';
