@@ -1,8 +1,3 @@
-/**
-  Neriya Bar-lev  313366676
-  Netanel Avraham 207544131
- */
-
 import 'dart:io';
 
 import '../targil4/Entities.dart';
